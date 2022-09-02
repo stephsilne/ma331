@@ -1,0 +1,489 @@
+---
+title: "Paper"
+author: "Stephaan Silne"
+date: "6/30/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(testit)
+```
+
+CODE.
+
+
+```{r, echo = FALSE}
+l2rowsampling.LS <- function(A,s){
+  #INPUT: Matrix A, positive integer s
+  #OUTPUT: sketch matrix A_tilde
+  m <- dim(A)[1]
+  n <- dim(A)[2]
+  len <- seq(1,m)
+  A_tilde <- matrix(0,s,n)
+  for (t in 1:s){
+    i = sample.int(m, 1)[1]
+    P <- (norm((A[i,]), type = c("2"))^2)/ (norm(A, type = c("F"))^2)
+    p_i <- rep(x = P, times = length(len))
+    print(A[i,])
+    print(p_i)
+    A_tilde[t,] = A[i,]/sqrt(s*p_i[i])
+  }
+  return(A_tilde)
+}
+#####################################################
+# c1 <- c(1,2,0,1,5,9,8,0)
+# c2 <- c(550,694,79,859,80,192,4,37)
+# c3 <- c(0,8,4,18,19,5,3,1)
+# c4 <- c(1,3,9,1,8,3,2,2)
+# c5 <- c(82,300,478,13,69,50,110,438)
+# c6 <- c(7,12,3,0,7,0,11,0)
+# c7 <- c(3,2,9,11,12,3,1,7)
+# c8 <- c(313,89,48,372,118,93,451,381)
+# c9 <- c(1,2,3,4,5,6,59,8)
+# A = rbind(c1,c2,c3,c4,c5,c6,c7,c8,c9)
+# print(A)
+# s = 6
+
+
+# c1 <- c(0,0,0,0,0,0,0,0)
+# c2 <- c(0,0,0,0,0,0,0,0)
+# c3 <- c(0,0,0,0,0,0,0,0)
+# c4 <- c(0,0,0,0,0,0,0,0)
+# c5 <- c(2,4,11,13,8,9,1,3)
+# c6 <- c(0,0,0,0,0,0,0,0)
+# c7 <- c(0,0,0,0,0,0,0,0)
+# c8 <- c(0,0,0,0,0,0,0,0)
+# c9 <- c(0,0,0,0,0,0,0,0)
+# A = rbind(c1,c2,c3,c4,c5,c6,c7,c8,c9)
+# print(A)
+# s = 4
+# ######################################################
+# 
+# diffn <- (t(A) %*% A) - (t(A_t) %*% A_t)
+# relative.err <- (norm((diffn), type = c("F")))
+# bound <- (1/sqrt(s)) * (norm(A, type = c("F")))^2
+# print(A)
+# print(A_t)
+# #assert("the relative error is bounded", relative.err < bound)
+# print(relative.err)
+# print(bound)
+
+##################################################################
+# A = matrix(data = c(1,1,1,1,1,1,1,1,1),
+#        nrow = 3,
+#        ncol = 3, byrow = TRUE)
+# print(A)
+# s = 2
+
+A = matrix(data = c(1,0,0,0,1,0,0,0,1),
+       nrow = 3,
+       ncol = 3, byrow = TRUE)
+print(A)
+s = 2
+
+A_t = l2rowsampling.LS(A,s)
+print(A_t)
+
+smple <- c()
+for (i in 1:100){
+  A_t = uniformrowsampling.LS(A,s)
+  diffn <- (t(A) %*% A) - (t(A_t) %*% A_t)
+  frob_diff <- (norm((diffn), type = c("F")))
+  smple[i] <- frob_diff
+  
+}
+frob_diff.mean <- mean(smple)
+bound <- (1/sqrt(s))* (norm(A, type = c("F")))^2
+#assert("the relative error is bounded", relative.err < bound)
+print(frob_diff.mean)
+print(bound)
+
+
+```
+
+```{r, echo=FALSE}
+uniformrowsampling.LS <- function(A,s){
+  #INPUT: Matrices A, positive integer s
+  #OUTPUT: sketch matrix A_tilde
+  m <- dim(A)[1]
+  n <- dim(A)[2]
+  len <- seq(1,m)
+  A_tilde <- matrix(0,s,n)
+  for (t in 1:s){
+    i = sample.int(m, 1)[1]
+    P <- 1/(m)
+    p_i <- rep(x = P, times = length(len))
+    print(A[i,])
+    print(p_i)
+    A_tilde[t,] = A[i,]/sqrt(s*p_i[i])
+  }
+  return(A_tilde)
+}
+
+############################################
+# c1 <- c(1,2,0,1,5,9,8,0)
+# c2 <- c(550,694,79,859,80,192,4,37)
+# c3 <- c(0,8,4,18,19,5,3,1)
+# c4 <- c(1,3,9,1,8,3,2,2)
+# c5 <- c(82,300,478,13,69,50,110,438)
+# c6 <- c(7,12,3,0,7,0,11,0)
+# c7 <- c(3,2,9,11,12,3,1,7)
+# c8 <- c(313,89,48,372,118,93,451,381)
+# c9 <- c(1,2,3,4,5,6,59,8)
+# A = rbind(c1,c2,c3,c4,c5,c6,c7,c8,c9)
+# print(A)
+# s = 6
+
+
+# c1 <- c(0,0,0,0,0,0,0,0)
+# c2 <- c(0,0,0,0,0,0,0,0)
+# c3 <- c(0,0,0,0,0,0,0,0)
+# c4 <- c(0,0,0,0,0,0,0,0)
+# c5 <- c(2,4,11,13,8,9,1,3)
+# c6 <- c(0,0,0,0,0,0,0,0)
+# c7 <- c(0,0,0,0,0,0,0,0)
+# c8 <- c(0,0,0,0,0,0,0,0)
+# c9 <- c(0,0,0,0,0,0,0,0)
+# A = rbind(c1,c2,c3,c4,c5,c6,c7,c8,c9)
+# print(A)
+# s = 4
+# #############################################
+# diffn <- (t(A) %*% A) - (t(A_t) %*% A_t)
+# relative.err <- (norm((diffn), type = c("F")))
+# bound <- (1/sqrt(s))* (norm(A, type = c("F")))^2
+# print(A)
+# print(A_t)
+# #assert("the relative error is bounded", relative.err < bound)
+# print(relative.err)
+# print(bound)
+
+############################################
+A = matrix(data = c(1,1,1,0,0,0,0,0,0),
+       nrow = 3,
+       ncol = 3, byrow = TRUE)
+print(A)
+s = 2
+
+A_t = uniformrowsampling.LS(A,s)
+print(A_t)
+
+
+smple <- c()
+for (i in 1:100){
+  A_t = uniformrowsampling.LS(A,s)
+  diffn <- (t(A) %*% A) - (t(A_t) %*% A_t)
+  frob_diff <- (norm((diffn), type = c("F")))
+  smple[i] <- frob_diff
+  
+}
+frob_diff.mean <- mean(smple)
+bound <- (1/sqrt(s))* (norm(A, type = c("F")))^2
+#assert("the relative error is bounded", relative.err < bound)
+print(frob_diff.mean)
+print(bound)
+```
+
+
+```{r, echo = FALSE}
+levrowsampling.LS <- function(A,s){
+  #INPUT: Matrix A, positive integer s
+  #OUTPUT: sketch matrix A
+  m <- dim(A)[1]
+  n <- dim(A)[2]
+  len <- seq(1,m)
+  A_tilde <- matrix(0,s,n)
+  A.svd <- svd(A, nu = nrow(A), nv = ncol(A))
+  U <- A.svd$u
+  for (t in 1:s){
+    i = sample.int(m, 1)[1]
+    P <-(norm((U[i,]), type = c("2"))^2)/ (norm(U, type = c("F"))^2)
+    p_i <- rep(x = P, times = length(len))
+    print(A[i,])
+    print(p_i)
+    A_tilde[t,] = A[i,]/sqrt(s*p_i[i])
+  }
+  return(A_tilde)
+}
+
+############################################
+# c1 <- c(1,2,0,1,5,9,8,0)
+# c2 <- c(550,694,79,859,80,192,4,37)
+# c3 <- c(0,8,4,18,19,5,3,1)
+# c4 <- c(1,3,9,1,8,3,2,2)
+# c5 <- c(82,300,478,13,69,50,110,438)
+# c6 <- c(7,12,3,0,7,0,11,0)
+# c7 <- c(3,2,9,11,12,3,1,7)
+# c8 <- c(313,89,48,372,118,93,451,381)
+# c9 <- c(1,2,3,4,5,6,59,8)
+# A = rbind(c1,c2,c3,c4,c5,c6,c7,c8,c9)
+# print(A)
+# s = 6
+# ######################################################
+# diffn <- (t(A) %*% A) - (t(A_t) %*% A_t)
+# relative.err <- (norm((diffn), type = c("F")))
+# bound <- (1/sqrt(s))* (norm(A, type = c("F")))^2
+# print(A_t)
+# #assert("the relative error is bounded", relative.err < bound)
+# print(relative.err)
+# print(bound)
+
+
+#########################################################
+# A = matrix(data = c(1,1,1,1,1,1,1,1,1),
+#        nrow = 3,
+#        ncol = 3, byrow = TRUE)
+# print(A)
+# s = 2
+
+
+
+A = matrix(data = c(1,1,1,1,1,1,1,1,1),
+       nrow = 3,
+       ncol = 3, byrow = TRUE)
+print(A)
+s = 2
+
+A_t = levrowsampling.LS(A,s)
+print(A_t)
+
+
+
+
+smple <- c()
+for (i in 1:100){
+  A_t = uniformrowsampling.LS(A,s)
+  diffn <- (t(A) %*% A) - (t(A_t) %*% A_t)
+  frob_diff <- (norm((diffn), type = c("F")))
+  smple[i] <- frob_diff
+  
+}
+frob_diff.mean <- mean(smple)
+bound <- (1/sqrt(s))* (norm(A, type = c("F")))^2
+#assert("the relative error is bounded", relative.err < bound)
+print(frob_diff.mean)
+print(bound)
+```
+
+
+```{r, echo = FALSE}
+colsampling.LS <- function(A,s){
+  #INPUT: Matrices A, B, positive integer c, probability type on which sampling is based
+  #OUTPUT: c sampled columns and rows
+  #NOTES: QR/SVD used for LS
+  m <- dim(A)[1]
+  n <- dim(A)[2]
+
+  #sampling for LS/solving of Linear systems of Equations
+  len <- seq(1,n)
+  A_tilde <- matrix(0,m,s)
+  for (i in 1:n){
+    P <- (norm((A[,i]), type = c("2"))^2)/ (norm(A, type = c("F"))^2)
+    p_i <- rep(x = P, times = length(len))
+    for (t in 1:s){
+    #sample in the easiest way - sample uniformly - p_i/k = 1/n
+      i_c = sample(len,1,prob=p_i,replace=T)
+      A_tilde[,t] = A[,i_c]/sqrt(s*p_i[i_c])
+      }
+  }
+  return(A_tilde)
+}
+
+#########################################
+matrix_func <- function(m,n){
+  A <- matrix(0,m,n)
+  for (i in 1:m){
+    for(j in 1:n){
+        A[i,j] = (i+j)^2 * sin(i * j)
+    }
+  }
+  return(A)
+}
+A = matrix_func(5,25)
+
+#A = matrix(sample(1:100,180,replace = TRUE),ncol = 12)
+
+#mat = matrix(0, 10, 10)
+#i_m = sample(1:5, size = 1, replace = TRUE)
+#j_m = sample(5:10, size =1, replace = TRUE)
+#mat[i_m, j_m] = sample(1:100, 1)
+#A = mat
+
+s = sample.int(dim(A)[2], 1)[1]
+A_t = colsampling.LS(A,s)
+
+#########################################
+
+M = ((A %*% t(A)) - (A_t %*% t(A_t)))
+left = norm(M, type = c("F"))
+right = (1 / sqrt(s)) * norm(A, type = c("F"))^2
+print(left)
+print(right)
+assert("Bound does not exist", left <= right)
+```
+
+```{r, echo = FALSE}
+unif_elementsampling.LS <- function(A,s){
+  #INPUT: Matrices A, B, positive integer c, probability type on which sampling is based
+  #OUTPUT: c sampled columns and rows
+  #NOTES: QR/SVD used for LS
+  m <- dim(A)[1]
+  n <- dim(A)[2]
+
+  #sampling for LS/solving of Linear systems of Equations
+  length_i <- seq(1,m)
+  length_j <- seq(1,n)
+  A_tilde <- matrix(0,m,n)
+  
+    #sample in the  way - sample uniformly - p_i/k = 1/n
+  for (i in 1:m){
+    for (j in 1:n){
+      P <- (1)/ (m*n)
+      p_i <- rep(x = P, times = length(length_i))
+      p_j <- rep(x = P, times = length(length_j))
+      for (t in 1:s){
+        i_c = sample(length_i,1,prob=p_i,replace=T)
+        j_c = sample(length_j,1,prob=p_j,replace=T)
+        A_tilde[i,j] = A_tilde[i,j] + A[i_c,j_c]/sqrt(s*P)
+      }
+    }
+  }
+  return(A_tilde)
+}
+
+##########################################################
+#A = matrix(sample(1:100,180,replace = TRUE),ncol = 12)
+matrix_func <- function(m,n){
+  A <- matrix(0,m,n)
+  for (i in 1:m){
+    for(j in 1:n){
+        A[i,j] = (i+j)^2 * sin(i * j)
+    }
+  }
+  return(A)
+}
+A = matrix_func(10,10)
+s = sample.int(100, 1)[1] * ((m + n) * log(m + n))
+m = dim(A)[1]
+n = dim(A)[2]
+A_t <- unif_elementsampling.LS(A,s)
+M <-  (A - A_t)
+left <- norm (M, type = c("2"))
+right <- m * n *(((m + n) * log(m + n))/ s) * norm(A, type = c("F"))
+print(left)
+print(right)
+#assert("Bound exist", left <= right)
+```
+```{r, echo = FALSE}
+elementsampling.LS <- function(A,s){
+  #INPUT: Matrices A, B, positive integer c, probability type on which sampling is based
+  #OUTPUT: c sampled columns and rows
+  #NOTES: QR/SVD used for LS
+  m <- dim(A)[1]
+  n <- dim(A)[2]
+
+  #sampling for LS/solving of Linear systems of Equations
+  length_i <- seq(1,m)
+  length_j <- seq(1,n)
+  A_tilde <- matrix(0,m,n)
+    #sample in the  way - sample uniformly - p_i/k = 1/n
+  for (i in 1:m){
+    for (j in 1:n){
+        P <- s * (A[i,j]^2)/ (norm(A, type = c("F"))^2)
+        p_i <- rep(x = P, times = length(length_i))
+        p_j <- rep(x = P, times = length(length_j))
+      for (t in 1:s){
+        i_c = sample(length_i,1,prob=p_i,replace=T)
+        j_c = sample(length_j,1,prob=p_j,replace=T)
+        A_tilde[i,j] = A_tilde[i,j] + A[i_c,j_c]/sqrt(s*P)
+      }
+    }
+  }
+  return(A_tilde)
+}
+
+##########################################################
+#A = matrix(sample(1:100,180,replace = TRUE),ncol = 12) 
+matrix_func <- function(m,n){
+  A <- matrix(0,m,n)
+  for (i in 1:m){
+    for(j in 1:n){
+        A[i,j] = (i+j)^2 * sin(i * j)
+    }
+  }
+  return(A)
+}
+A = matrix_func(10,10)
+#mat = matrix(0, 10, 10)
+#i_m = sample(1:5, size = 1, replace = TRUE)
+#j_m = sample(5:10, size =1, replace = TRUE)
+#mat[i_m, j_m] = sample(1:100, 1)
+#A = mat
+
+#A = matrix(0,12,12)
+#A[5,4] = 1
+#s = sample.int(100, 1)[1]
+s = sample.int(100, 1)[1] * ((m + n) * log(m + n))
+m = dim(A)[1]
+n = dim(A)[2]
+A_t <- elementsampling.LS(A,s)
+M <-  (A - A_t)
+left <- norm (M, type = c("2"))
+right <-  norm(A, type = c("F"))^2
+print(left)
+print(right)
+print(A)
+print(A_t)
+print(norm(A, type = c("F")))
+print(sqrt(((m + n) * log(m + n))/ s))
+
+#assert("Bound exist", left <= right)
+```
+
+
+
+```{r, echo = FALSE}
+original_elementsampling.LS <- function(A,s, eps = 0.3){
+  #INPUT: Matrices A, B, positive integer c, probability type on which sampling is based
+  #OUTPUT: c sampled columns and rows
+  #NOTES: QR/SVD used for LS
+  m <- dim(A)[1]
+  n <- dim(A)[2]
+  A_tilde <- matrix(0,m,n)
+  #sampling for LS/solving of Linear systems of Equations
+  eps = 0.3
+  length_i <- seq(1,m)
+  length_j <- seq(1,n)
+  A_hat <- A
+  A_hat[A_hat < (eps/(2*n))] <- 0
+  for (t in 1:s){
+    #sample in the  way - sample uniformly - p_i/k = 1/n
+    for (i in 1:m){
+      for (j in 1:n){
+        P <- (A[i,j]^2)/ (norm(A, type = c("F"))^2)
+        p_i <- rep(x = P, times = length(length_i))
+        p_j <- rep(x = P, times = length(length_j))
+        i_c = sample(length_i,1,prob=p_i,replace=T)
+        j_c = sample(length_j,1,prob=p_j,replace=T)
+        A_tilde[i,j] = A_hat[i,j] + A[i_c,j_c]/sqrt(s*P)
+    }
+  }
+  }
+
+  return(A_tilde)
+}
+
+##########################################################
+A = matrix(sample(1:100,100,replace = TRUE),ncol = 10) #n by n matrix, n = 10
+m = dim(A)[1]
+n = dim(A)[2]
+s = (28*n*(log(sqrt(2)*n))/(0.3)^2)* norm(A, type = c("F"))^2
+A_t <- original_elementsampling.LS(A,s)
+M <-  (A - A_t)
+left <- norm (M, type = c("2"))
+right <- eps
+print(left)
+print(right)
+#assert("Bound exist", left <= right)
+```
+

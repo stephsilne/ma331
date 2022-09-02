@@ -1,0 +1,177 @@
+---
+title: "MA 331 HW 07"
+author: "Stephaan Silne"
+date: "11/7/2020"
+output:
+  html_document: default
+  word_document: default
+---
+
+12.31.
+
+(a).
+```{r, echo = FALSE}
+library(readxl)
+loss <- read_excel("C:/Users/Stephaan/Downloads/ex12-31loss.xls")
+str(loss)
+attach(loss)
+tapply(Loss,Group,mean)
+tapply(Loss,Group,length)
+tapply(Loss,Group,sd)
+```
+
+(b).
+  -   Given that the largest standard deviation $11.5007296$ is less than twice the smallest $2 \times 9.078364 = 18.156728$, it can be assumed that there are equal population standard deviations, thus the variances should be pooled. 
+  
+(c).
+
+```{r, echo = FALSE}
+ctrl <- loss$Loss[1:35]
+indiv <- loss$Loss[36:70]
+grp <- loss$Loss[71:104]
+
+hist(ctrl, xlab = "Change in Weight", main = "Histogram of Control Program")
+hist(indiv, xlab = "Change in Wieght", main = "Histogram of Individual-Incentive Program")
+hist(grp, xlab = "Change in Weight", main = "Histogram of Group Program")
+```
+
+  -   Based on the histograms, we can be confident that the sample means are approximately normal as the most graphs are bell shaped and symmetric around a singular peak. Individual and Group does show some skewness while Control seems the most normal. This and the fact that the sample sizes $n \geq 30$, allows us to assume that the sample means are approximately normal. 
+  
+
+12.32.
+
+(a).
+The degrees of freedom, testing $f$ statistic and P-value are as follows.
+```{r, echo = FALSE}
+oneway.test(Loss ~ Group, var.equal = TRUE)
+```
+
+Based on the P-value $0.0007278 << 0.05$, there is enough statistic evidence to reject $H_0$, thus the means of the weight loss groups are not equal. 
+
+
+(b).
+```{r, echo = FALSE}
+
+residual <- function(gp) {
+  rsd <- c()
+  for (i in 1:length(gp)) {
+    resi <- gp[i] - mean(gp)
+    rsd <- c(rsd,resi)
+  }
+  print(rsd)
+}
+
+cr <- residual(ctrl)
+ir <- residual(indiv)
+gr <- residual(grp)
+qqnorm(cr, main = 'Normal QQ-Plot for Control Program', ylab = 'Residuals')
+qqnorm(ir, main = 'Normal QQ-Plot for Individual Incentive Program', ylab = 'Residuals')
+qqnorm(gr, main = 'Normal QQ-Plot for Group Program', ylab = 'Residuals')
+```
+
+Based on the QQ-plots for each of the programs, there does not seem to be any extreme outliers or any evidence of a curve, as all show some form of linearity. There does appear to be some skewness on the right side, but due to the largeness of the samples sizes for each, by the Central Limit Theorem, none of the residual divert from Normality and are random. 
+
+
+(c).
+
+$\begin{align}
+T_{i,j} &= \frac{\bar{X}_{i,.} - \bar{X}_{j,.}}{\sqrt{S_{p}^2(\frac{1}{n_i} + \frac{1}{n_j})}}\\
+S_{p}^2 &= MSE = \frac{SSE}{n-k} = \sum^{k}_{i=1}(n_i - 1)S_{i}^2\\
+&= \frac{[(35-1)(11.500726)^2] + [(34-1)(11.139151)^2] + [(35-1)(9.078364)^2]}{101}\\
+&= 112.810870\\
+\text{Ctrl and Grp}\\
+T_{i,j} &= \frac{-1.008571-(-10.785294)}{\sqrt{(112.810870)(\frac{1}{35} + \frac{1}{34})}}\\
+&= 3.82266967851\\
+\text{Grp and Indiv}\\
+T_{i,j} &= \frac{-10.785294-(-3.708571)}{\sqrt{(112.810870)(\frac{1}{34} + \frac{1}{35})}}\\
+&= -2.76697769133\\
+\text{Ctrl and Indiv}\\
+T_{i,j} &= \frac{-1.008571-(-3.708571)}{\sqrt{(112.810870)(\frac{1}{35} + \frac{1}{35})}}\\
+&= 1.06342609781\\
+\end{align}$
+
+$\begin{align}
+P(|T_{i,j}| > |t_{i,j}|) = 
+\end{align}$
+
+```{r, echo = FALSE}
+pval1 <- 2 * (1 - pt(abs(3.82266967851),101))
+pval2 <- 2 * (1 - pt (abs(-2.76697769133),101))
+pval3 <- 2 * (1 - pt(abs(1.06342609781), 101))
+
+sprintf("the P value for ctrl vs. grp is: %f", pval1)
+sprintf("the P value for grp vs. indiv is: %f", pval2)
+sprintf("the P value for ctrl vs. indiv is: %f", pval3)
+```
+
+The P - value $(0.000228 << 0.05)$ and $(0.006730 << 0.05)$ suggests that the mean of Control Program and the mean of the Group Program along with the mean of the Group Program and Individual Incentive Program do differ. Although, there is not enough statistical evidence to suggest that the means of the Control and Individual Incentive Program differ, as $(0.290125 >> 0.05)$.
+
+(d).
+Based on the reported $F$ statistic and P-value using analysis of variance, there is enough statistic evidence $(0.0007278 << 0.05)$ to infer the alternative hypothesis is true, therefore the means of each group are all not equal. Given the lack of abnormality in the residuals and there exists linearity, it can be assumed that the analysis is not invalid and that the deviations are normally distributed. Specifically, due to the least significant difference method that examines whether pairs differ, it can be concluded that that the only means that do not vary in difference are the Control Program and the Individual Incentive program.
+
+12.33.
+(b).
+The testing statistic, degrees of freedom and P-value are shown below.
+```{r, echo = FALSE}
+oneway.test(Kilo ~ Group, var.equal = TRUE)
+```
+It can be seen that dividing by the constant does not affect the normality as the new means and standard deviations are the same, but just divided by 2. The F statistic and p value are the exact same values as derived before it was converted from pounds to kilograms. 
+
+12.41.
+
+(a).
+
+To compare the average score of brown eyes with the average of the other two eye colors, the contrast entails, $\psi_1 : a_1 = \frac{1}{2},  a_4 = \frac{1}{2}, a_2 = -1$.
+
+
+(b).
+To compare the average score when the model is looking at you versus the score when looking down ,the contrast entails,$\psi_2 : a_1 = \frac{1}{3}, a_2 = \frac{1}{3}, a_4 = \frac{1}{3}, a_3 = -1$.
+
+12.42.
+
+(a).
+Conducting a two-sided test, $\psi_1$, the null hypothesis would be $H_0: \psi_1 = 0$, while the alternative hypothesis would be $H_a : \psi_1 \neq 0$.For $\psi_2$, the null hypothesis would be $H_0: \psi_2 = 0$, while the alternative hypothesis would be $H_a : \psi_2 \neq 0$.
+
+(b).
+The contrast for $\psi_1$ is $c_1 = (\frac{1}{2} \cdot 3.19) + (\frac{1}{2} \cdot 3.86) + (-1 \cdot 3.72) = -0.195$. The contrast for $\psi_2$ is $c_2 = (\frac{1}{3} \cdot 3.19) + (\frac{1}{3} \cdot 3.72) + (\frac{1}{3} \cdot 3.86) + (-1 \cdot 3.11) = 0.48$.
+
+(c).
+
+
+$\begin{align}
+{S_p}^2 &= MSE = \frac{SSE}{n-k} = \sum^{k}_{i=1}(n_i - 1)S_{i}^2\\
+&= \frac{[(67-1)(1.75)^2] + [(37-1)(1.72)^2] + [(41-1)(1.53)^2] + [(77-1)(1.67)^2]}{218}\\
+&= 2.8175220\\
+\text{therefore,}\\
+SE_{c1} &= \sqrt{S_p^2\sum_{i=1}{k} \frac{a_i^2}{n_i}}\\
+SE_{c1} &= \sqrt{(2.8175220)(\frac{0.5^2}{67}) +(\frac{0.5^2}{77})+ (\frac{-1^2}{37})}\\
+&= 0.3098\\
+SE_{c2} &= \sqrt{(2.8175220)(\frac{0.\bar{33}^2}{67}) +(\frac{0.\bar{33}^2}{37})+ (\frac{0.\bar{33}^2}{77}) + (\frac{-1^2}{41})}\\
+&= 0.2934\\
+\end{align}$
+
+(d).
+
+
+The testing statistic is:
+$\begin{align}
+t &= \frac{c_{\psi}}{\sqrt{S_p^2 \sum_{i=1}^{n} \frac{a_i^2}{n_i}}}\\
+t_1 &= \frac{-0.195}{0.3098}\\
+&= -0.629\\
+t_2 &= \frac{0.48}{0.2934}\\
+&= 1.636\\
+\end{align}$
+
+```{r, echo = FALSE}
+
+pv1 <- 2 * (1 - pt(abs(-0.629),218))
+pv2 <- 2 * (1 - pt(abs(1.636),218))
+sprintf("The P value for the first testing statistic is: %f", pv1)
+sprintf("The P value for the second testing statistic is %f", pv2)
+```
+
+Based on the P-values for the two hypothesis tests, there is not enough statistical evidence against $H_0$. 
+
+(e.)
+At a 95% confidence interval, for $\psi_1$, it is $-0.195 \pm 1.971(218)(0.3098) = [-0.773,0.383]$, while for $\psi_2$ it is $0.48 \pm 1.971(218)(0.2934) = [-0.098,1.058]$.
+

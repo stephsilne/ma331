@@ -1,0 +1,219 @@
+---
+title: "Final Project: R code"
+author: "Stephaan Silne"
+date: "12/16/2020"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r, echo = FALSE}
+library(knitr)
+library(readxl)
+# the data
+chz <- read_excel("C:/Users/Stephaan/Downloads/ex11-53cheese.xls")
+# data header
+kable(head(chz))
+```
+
+(11.53).
+```{r, echo = FALSE}
+#MEAN
+sapply(chz[2:5], mean)
+#MEDIAN
+sapply(chz[2:5], median)
+#STANDARD DEVIATION
+sapply(chz[2:5], sd)
+#INTERQUARTILE RANGE
+sapply(chz[2:5], IQR)
+
+# ztem plots for each variable
+stem(chz$taste)
+stem(chz$acetic)
+stem(chz$h2s)
+stem(chz$lactic)
+
+# plots to test normality of variables
+qqnorm(chz$taste, main = "Normal Quantile Plot of Taste", ylab = "Taste Score")
+qqline(chz$taste, col = "red")
+qqnorm(chz$acetic, main = "Normal Quantile Plot of Acetic Acid", ylab = "Acetic Acid Concentration")
+qqline(chz$acetic, col = "red")
+qqnorm(chz$h2s, main = "Normal Quantile Plot of Hydrogen Sulfide", ylab = "Hydrogen Sulfide Concentration")
+qqline(chz$h2s, col = "red")
+qqnorm(chz$lactic, main = "Normal Quantile Plot of Lactic Acid", ylab = "Lactic Acid Concentration")
+qqline(chz$lactic, col= "red")
+```
+
+
+(11.54). 
+```{r, echo = FALSE}
+chz_corr = subset(chz, select = c("taste", "acetic", "h2s", "lactic"))
+# correlation table
+corrs <- with(chz, cor(chz_corr))
+
+# function that computes the corr t-test p value for a given correlation coeff. 
+pval <- function(r){
+  t = (r * sqrt(30-2))/(sqrt(1 - r^2))
+  print(2 * (1  - pt(abs(t),30-2) ))
+}
+
+corrs
+# taste with respect to acetic
+pval(corrs[2,1])
+# taste with respect to h2s
+pval(corrs[3,1])
+# taste with respect to lactic
+pval(corrs[4,1])
+
+# acetic with respect to h2s
+pval(corrs[3,2])
+# acetic with respect to lactic
+pval(corrs[4,2])
+#h2s with respect to lactic
+pval(corrs[4,3])
+
+#six plots
+plot(chz$taste ~ chz$acetic, main = "Plot of Taste vs. Acetic Acid Conc.", ylab = "Taste", xlab = "Acetic")
+mtext("P-value = 0.0017")
+plot(chz$taste ~ chz$h2s, main = "Plot of Taste vs. Hydrogen Sulfide Conc.", ylab = "Taste", xlab = "H2S")
+mtext("P-value = 1.37e-06")
+plot(chz$taste ~ chz$lactic, main = "Plot of Taste vs. Lactic Acid Conc.", ylab = "Taste", xlab = "Lactic")
+mtext("P-value = 1.405e-05")
+plot(chz$acetic ~ chz$h2s, main = "Plot of Acetic vs. Hydrogen Sulfide Conc.", ylab = "Acetic", xlab = "H2S")
+mtext("P-value = 0.00027")
+plot(chz$acetic ~ chz$lactic, main = "Plot of Acetic vs. Lactic Acid Conc.", ylab = "Acetic", xlab = "Lactic")
+mtext("P-value = 0.0004")
+plot(chz$h2s ~ chz$lactic, main = "Plot of Hydrogren Sulfide vs.Lactic Acid Conc.", ylab = "H2S", xlab = "Lactic")
+mtext("P-value = 0.00012")
+```
+
+(11.55).
+```{r, echo = FALSE}
+# 1st linear model
+lm1 <- lm(chz$taste ~ chz$acetic, data=chz)
+summary(lm1)
+
+# plots to to test normality in the residuals
+stem(residuals(summary(lm1)))
+qqnorm(residuals(summary(lm1)), main = "Residual QQ-Plot for Taste w/ resp. to Acetic Acid", ylab = "Residuals")
+qqline(residuals(summary(lm1)), col = "red")
+
+# main plot of linear model
+plot(chz$taste ~ chz$acetic, main = "Plot of Taste vs. Acetic Acid Conc.", ylab = "Taste", xlab = "Acetic")
+abline(lm1, col = "red")
+
+#plot of residuals vs. Acetic
+plot(residuals(summary(lm1)) ~ chz$acetic, main = "Plot of Residuals vs. Acetic Acid Conc.", ylab = "Residuals", xlab = "Acetic")
+abline(lm(residuals(summary(lm1))~chz$acetic, data = chz), col = "red")
+
+# plot of residuals vs two other explanatory variables
+plot(residuals(summary(lm1)) ~ chz$h2s, main = "Plot of Residuals vs. Hydrogen Sulfide Conc.", ylab = "Residuals", xlab = "H2S")
+plot(residuals(summary(lm1)) ~ chz$lactic, main = "Plot of Residuals vs. Lactic Acid Conc.", ylab = "Residuals", xlab = "Lactic")
+```
+
+(11.56).
+```{r, echo = FALSE}
+# 2nd linear model
+lm2 <- lm(chz$taste ~ chz$h2s, data=chz)
+summary(lm2)
+
+#plots to test normality in residuals
+stem(residuals(summary(lm2)))
+qqnorm(residuals(summary(lm2)), main = "Residual QQ-Plot for Taste w/ resp. to Hydrogen Sulfide", ylab = "Residuals")
+qqline(residuals(summary(lm2)), col = "red")
+
+# main plot of linear model
+plot(chz$taste ~ chz$h2s, main = "Plot of Taste vs. Hydrogen Sulfide Conc.", ylab = "Taste", xlab = "H2S")
+abline(lm2, col = "red")
+
+# plot of residuals vs H2S
+plot(residuals(summary(lm2)) ~ chz$h2s, main = "Plot of Residuals vs. Hydrogen Sulfide Conc.", ylab = "Residuals", xlab = "H2S")
+abline(lm(residuals(summary(lm2))~chz$h2s, data = chz), col = "red")
+
+#plot of residuals vs two other explanatory variables
+plot(residuals(summary(lm2)) ~ chz$acetic, main = "Plot of Residuals vs. Acetic Acid Conc.", ylab = "Residuals", xlab = "Acetic")
+plot(residuals(summary(lm2)) ~ chz$lactic, main = "Plot of Residuals vs. Lactic Acid Conc.", ylab = "Residuals", xlab = "Lactic")
+```
+
+(11.57).
+```{r, echo = FALSE}
+# 3rd linear model
+lm3 <- lm(chz$taste ~ chz$lactic, data=chz)
+summary(lm3)
+
+#plots to test normality in residuals
+stem(residuals(summary(lm3)))
+qqnorm(residuals(summary(lm3)), main = "Residual QQ-Plot for Taste w/ resp. to Lactic Acid", ylab = "Residuals")
+qqline(residuals(summary(lm3)), col = "red")
+
+# main plot of linear model
+plot(chz$taste ~ chz$lactic, main = "Plot of Taste vs. Lactic Acid Conc.", ylab = "Taste", xlab = "Lactic")
+abline(lm3, col = "red")
+
+# plot of residuals vs Lactic
+plot(residuals(summary(lm3)) ~ chz$lactic, main = "Plot of Residuals vs. Lactic Acid Conc.", ylab = "Residuals", xlab = "Lactic")
+abline(lm(residuals(summary(lm3))~chz$lactic, data = chz), col = "red")
+
+#plot of residuals vs two other explanatory variables
+plot(residuals(summary(lm3)) ~ chz$acetic, main = "Plot of Residuals vs. Acetic Acid Conc.", ylab = "Residuals", xlab = "Acetic")
+plot(residuals(summary(lm3)) ~ chz$h2s, main = "Plot of Residuals vs. Hydrogen Sulfide Conc.", ylab = "Residuals", xlab = "H2S")
+```
+
+(11.58).
+```{r, echo = FALSE}
+# data.frame comparing the linear models
+Taste <- c("-61.50 + 15.648x", "-9.787 + 5.7761x", "-29.86 + 37.720x")
+F_value <- c("12.11", "37.29", "27.55")
+P_value <- c("0.00166", "0.00000137", "0.0000141")
+r_squared <- c("30.2%", "57.1%", "49.6%")
+s <- c("13.82", "10.83", "11.75")
+df <- data.frame(Taste, F_value, P_value, r_squared, s)
+row.names(df) <- c("Acetic", "H2S", "Lactic")
+print(df)
+```
+
+(11.59). 
+```{r, echo = FALSE}
+# first multi-linear regression model
+lm_m1 = lm(chz$taste ~ chz$acetic + chz$h2s, data = chz)
+summary(lm_m1)
+```
+
+(11.60).
+```{r, echo = FALSE}
+# second multi-linear regression model
+lm_m2 = lm(chz$taste ~ chz$lactic + chz$h2s, data = chz)
+summary(lm_m2)
+
+# residual plot for the multi-linear regression model
+qqnorm(residuals(summary(lm_m2)), main = "Residual QQ-Plot for Taste w/ resp. to H2S/Lactic", ylab = "Residuals")
+qqline(residuals(summary(lm_m2)), col = "red")
+
+# plot of residuals
+plot(residuals(summary(lm_m2)) ~ chz$h2s, main = "Plot of Residuals vs. Hydrogen Sulfide Conc.", ylab = "Residuals", xlab = "H2S")
+abline(lm(residuals(summary(lm_m2))~chz$h2s, data = chz), col = "red")
+
+plot(residuals(summary(lm_m2)) ~ chz$lactic, main = "Plot of Residuals vs. Lactic Acid Conc.", ylab = "Residuals", xlab = "Lactic")
+abline(lm(residuals(summary(lm_m2))~chz$lactic, data = chz), col = "red")
+```
+
+(11.61). 
+```{r, echo = FALSE}
+# third multi-linear regression model
+lm_m3 = lm(chz$taste ~ chz$lactic + chz$h2s + chz$acetic, data = chz)
+summary(lm_m3)
+
+# residual plot for the multi-linear regression model
+qqnorm(residuals(summary(lm_m3)), main = "Residual QQ-Plot for Taste w/ resp. to H2S/Lactic/Acetic", ylab = "Residuals")
+qqline(residuals(summary(lm_m3)), col = "red")
+
+# plot of residuals
+plot(residuals(summary(lm_m3)) ~ chz$h2s, main = "Plot of Residuals vs. Hydrogen Sulfide Conc.", ylab = "Residuals", xlab = "H2S")
+abline(lm(residuals(summary(lm_m3))~chz$h2s, data = chz), col = "red")
+
+plot(residuals(summary(lm_m3)) ~ chz$lactic, main = "Plot of Residuals vs. Lactic Acid Conc.", ylab = "Residuals", xlab = "Lactic")
+abline(lm(residuals(summary(lm_m3))~chz$lactic, data = chz), col = "red")
+
+plot(residuals(summary(lm_m3)) ~ chz$acetic, main = "Plot of Residuals vs. Acetic Acid Conc.", ylab = "Residuals", xlab = "Acetic")
+abline(lm(residuals(summary(lm_m3))~chz$acetic, data = chz), col = "red")
+```

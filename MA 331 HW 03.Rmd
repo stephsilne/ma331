@@ -1,0 +1,390 @@
+---
+title: "HW 03 MA 331"
+author: "Stephaan Silne"
+date: "9/18/2020"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+
+## Problem 1.
+
+(i). Moment Estimator $\hat{\theta}_{M}$;
+
+$\begin{aligned}
+E(x) &= \int_{0}^{\theta}x\frac{1}{\theta} dx\\
+&= \frac{1}{\theta}[\frac{x^2}{2}|_{0}^{\theta}]\\
+&= \frac{\theta}{2} = \bar{X}\\
+\hat{\theta}= 2\bar{X}\\
+\end{aligned}$
+
+The moment estimator $\hat{\theta}_{M}$ is $2\bar{X}$.
+
+
+(ii). Maximum Likelihood Estimator $\hat{\theta}_{L}$;
+
+
+$\begin{aligned}
+f(x) = \frac{1}{\theta}\\
+\prod_{i=1}^{n}f(x) &= \prod_{i=1}^{n} \frac{1}{\theta}\\
+&= \frac{1}{\theta^n} = \theta^{-n}\\
+\ln(\prod_{i=1}^{n}f(x)) &= \ln(\theta^{-n})\\
+&= -n\ln(\theta)\\
+\frac{\partial}{\partial \theta} \ln(\prod_{i=1}^{n}f(x)) &= -\frac{n}{\theta} < 0\\
+\hat{\theta}_L = x_{n}\\
+\end{aligned}$
+
+
+Given that the maximum likelihood is a decreasing function, the value $\hat{\theta}_{L}$ that maximizes the likelihood of observing $(x_{1},\cdots,x_{n})$ is the last term or $x_{n}$.
+
+
+
+(iii).
+
+Mean of real data $(X_{1}, \cdots, X_{7})$,
+
+```{r, echo = FALSE}
+
+mean(x = c(1.0,2.4,3.2,1.2,0.5,3.1,6.8))
+
+```
+
+$\begin{aligned}
+\hat{\theta}_{M} &= 2\bar{X} = 2(2.6) = 5.2\\
+\hat{\theta}_{L} &= x_{n} = 6.8\\
+\end{aligned}$
+
+The maximum likelihood estimator is better at approximating $\hat{\theta}$ for $U(0,\theta)$ because it observes all $x_{i}$'s under uniform distribution. The moment method fails to assess or account for probability.
+
+
+
+(iv).
+
+```{r, echo = FALSE}
+
+theta_m <- c()
+theta_l <- c()
+
+for (i in 1:100){
+  
+  srs <- runif(n = 30, min = 0, max = 7)
+  mest <- 2 * mean(srs)
+  mle <- max(srs)
+  
+  theta_m <- c(theta_m, mest)
+  theta_l <- c(theta_l, mle)
+  
+}
+
+```
+
+
+Box Plots of $\hat{\theta}_{M}$ and $\hat{\theta}_{L}$
+
+```{r, echo = FALSE}
+
+boxplot(x = theta_m, main = "Method Estimators for Uniform Distributions", xlab = "theta_m")
+boxplot(x = theta_l, main = "Maximum Likelihood Estimators for Uniform Distributions", xlab = "theta_l" )
+
+```
+
+Sample Means of $\hat{\theta}_{M}$ and $\hat{\theta}_{L}$ respectively,
+
+```{r, echo = FALSE}
+
+mean(theta_m)
+mean(theta_l)
+
+```
+
+
+(v).
+
+```{r, echo = FALSE}
+
+  srs20 <- runif(n = 20, min = 0, max = 7)
+  mest20 <- 2 * mean(srs20)
+  mle20 <- max(srs20)
+
+```
+
+$\hat{\theta}_M$ for $n = 20$ is:
+```{r, echo = FALSE}
+
+mest20
+
+```
+
+$\hat{\theta}_L$ for $n = 20$ is:
+```{r, echo = FALSE}
+
+mle20
+
+```
+
+
+```{r, echo = FALSE}
+srs30 <- runif(n = 30, min = 0, max = 7)
+  mest30 <- 2 * mean(srs30)
+  mle30 <- max(srs30)
+
+```
+
+$\hat{\theta}_M$ for $n = 30$ is:
+```{r, echo = FALSE}
+
+mest30
+
+```
+
+$\hat{\theta}_L$ for $n = 30$ is:
+```{r, echo = FALSE}
+
+mle30
+
+```
+
+
+
+```{r, echo = FALSE}
+srs50 <- runif(n = 50, min = 0, max = 7)
+  mest50 <- 2 * mean(srs50)
+  mle50 <- max(srs50)
+
+```
+
+$\hat{\theta}_M$ for $n = 50$ is:
+```{r, echo = FALSE}
+
+mest50
+
+```
+
+$\hat{\theta}_L$ for $n = 50$ is:
+```{r, echo = FALSE}
+
+mle50
+
+```
+
+
+
+
+```{r, echo = FALSE}
+srs100 <- runif(n = 100, min = 0, max = 7)
+  mest100 <- 2 * mean(srs100)
+  mle100 <- max(srs100)
+
+```
+
+$\hat{\theta}_M$ for $n = 100$ is:
+```{r, echo = FALSE}
+
+mest100
+
+```
+
+$\hat{\theta}_L$ for $n = 100$ is:
+```{r, echo = FALSE}
+
+mle100
+
+```
+
+
+```{r, echo = FALSE}
+srs150 <- runif(n = 150, min = 0, max = 7)
+  mest150 <- 2 * mean(srs150)
+  mle150 <- max(srs150)
+
+```
+
+$\hat{\theta}_M$ for $n = 150$ is:
+```{r, echo = FALSE}
+
+mest150
+
+```
+
+$\hat{\theta}_L$ for $n = 150$ is:
+```{r, echo = FALSE}
+
+mle150
+
+```
+
+
+```{r, echo = FALSE}
+
+plot(x = c(mest20, mest30, mest50, mest100, mest150), y = c(mle20, mle30, mle50, mle100, mle150), xlab = "Moment Estimators", ylab = "Maximum Likelihood Estimator", main = "Plots of Estimators")
+
+
+```
+
+
+## Problem 2.
+
+
+(i.) Moment Estimators $(\hat{\mu},\hat{\sigma^2})$
+
+
+$\begin{aligned}
+\text{for $\hat{\mu}$},\\
+E(X_{i}) &= \mu\\
+E(X) &= \mu = \frac{1}{n}\sum_{i = 1}^{n}X_{i}\\
+\hat{\mu} &= \bar{X}\\
+\text{for $\hat{\sigma^2}$},\\
+\sigma^2 &= E(X^2) - [E(X)]^2\\
+\sigma^2 &= (\frac{1}{n}\sum_{i=1}^{n}X_{i}^2) - (\mu^2)\\
+\text{Given $\hat{\mu} = \bar{X}$},\\
+\sigma^2 &= \frac{1}{n}\sum_{i=1}^{n}X_{i}^2 - \bar{X}^2\\
+\hat{\sigma^2} &= \frac{1}{n}\sum_{i=1}^{n}(X_{i} - \bar{X})^2\\
+\end{aligned}$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(ii.) Maximum Likelihood Estimators $(\tilde{\mu},\tilde{\sigma^2})$,
+
+$\begin{aligned}
+f(x) = \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}\\
+L(\theta;x) &= \prod_{i=1}^{n}P(\theta,x)\\
+L(\mu,\sigma) &= \prod_{i=1}^{n}\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}\\
+&=\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x_{1}-\mu)^2}{2\sigma^2}} \times \cdots \times \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x_{n}-\mu)^2}{2\sigma^2}}\\
+\ln[L(\theta,\sigma)] &= \ln(\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x_{1}-\mu)^2}{2\sigma^2}} \times \cdots \times \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x_{n}-\mu)^2}{2\sigma^2}})\\
+&= \ln(\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x_{1}-\mu)^2}{2\sigma^2}}) + \cdots + \ln(\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(x_{n}-\mu)^2}{2\sigma^2}})\\
+&= \ln(\frac{1}{\sqrt{2\pi\sigma^2}}) + \ln(e^{\frac{-(x_{1}-\mu)^2}{2\sigma^2}}) + \cdots + \ln(\frac{1}{\sqrt{2\pi\sigma^2}}) + \ln(e^{\frac{-(x_{n}-\mu)^2}{2\sigma^2}})\\
+&= -\frac{1}{2}\ln(2\pi\sigma^2)- \frac{(x_{1}-\mu)^2}{2\sigma^2}\ln(e) + \cdots + (-\frac{1}{2}\ln(2\pi\sigma^2)- \frac{(x_{n}-\mu)^2}{2\sigma^2}\ln(e))\\
+&= -\frac{1}{2}\ln(2\pi) - \frac{1}{2}\ln(\sigma^2) - \frac{(x_{1}-\mu)^2}{2\sigma^2} + \cdots + (-\frac{1}{2}\ln(2\pi) - \frac{1}{2}\ln(\sigma^2) - \frac{(x_{n}-\mu)^2}{2\sigma^2})\\
+&= - \frac{1}{2}\ln(2\pi) - \ln(\sigma) - \frac{(x_{1}-\mu)^2}{2\sigma^2} - \cdots - \frac{1}{2}\ln(2\pi) - \ln(\sigma) - \frac{(x_{n}-\mu)^2}{2\sigma^2}\\
+\ln[L(\theta,\sigma)] &= -\frac{n}{2}\ln(2\pi) - n\ln(\sigma) - \frac{(x_{1}-\mu)^2}{2\sigma^2} - \cdots - \frac{(x_{n}-\mu)^2}{2\sigma^2}\\
+\text{for the estimator $\tilde{\mu}$},\\
+\frac{\partial}{\partial \mu}\ln[L(\theta,\sigma)] &= (0) - (0) + \frac{(x_{1} - \mu)}{\sigma^2} + \cdots \frac{(x_{n} - \mu)}{\sigma^2}\\
+&= \frac{1}{\sigma^2}[(x_{1} + \cdots + x_{n}) - n\mu]\\
+\text{set equal to 0},\\
+0 &= \frac{1}{\sigma^2} [(x_{1} + \cdots + x_{n}) - n\mu]\\
+n\mu &= (x_{1} + \cdots + x_{n})\\
+\tilde{\mu} &= \frac{(x_{1} + \cdots + x_{n})}{n}\\
+\text{for estimator $\tilde{\sigma^2}$},\\
+\frac{\partial}{\partial \sigma}\ln[L(\theta,\sigma)] &= (0) - \frac{n}{\sigma} + \frac{(x_{1} - \mu)^2}{\sigma^3} + \cdots + \frac{(x_{n} - \mu)^2}{\sigma^3}\\
+&= - \frac{n}{\sigma} + \frac{1}{\sigma^3}[(x_{1} - \mu)^2 + \cdots + (x_{n} - \mu)^2]\\
+\text{set equal to 0},\\
+0 &= - \frac{n}{\sigma} + \frac{1}{\sigma^3}[(x_{1} - \mu)^2 + \cdots + (x_{n} - \mu)^2]\\
+n &= \frac{1}{\sigma^2}[(x_{1} - \mu)^2 + \cdots + (x_{n} - \mu)^2]\\
+\tilde{\sigma^2} &= \frac{[(x_{1} - \mu)^2 + \cdots + (x_{n} - \mu)^2]}{n}\\
+\end{aligned}$
+
+
+
+
+## Problem 3.
+
+
+(6.17).
+
+  -   Since 2007, the American Psychological Association has supported an annual nationwide survey to
+examine stress across the United States.
+8 A total of 340 Millennials (18- to 33-year-olds) were asked to
+indicate their average stress level (on a 10-point scale) during the past month. The mean score was 5.4.
+Assume that the population standard deviation is 2.3.
+(a) Give the margin of error and find the 95% confidence interval for this sample.
+
+$\begin{aligned}
+m &= Z_{1-\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}\\
+m &= 1.96(\frac{2.3}{\sqrt{340}})\\
+m &= 0.244480\\
+\end{aligned}$
+
+Confidence Interval
+
+$\begin{aligned}
+P(\bar{X}-Z_{\frac{\alpha}{2}}\frac{\sigma_{x}}{\sqrt{n}} \leq \mu \leq \bar{X}+Z_{1-\frac{\alpha}{2}}\frac{\sigma_{x}}{\sqrt{n}} ) &= 1 - \alpha\\
+P(5.4 - 1.96(\frac{2.3}{\sqrt{340}}) \leq \mu \leq 5.4 + 1.96(\frac{2.3}{\sqrt{340}})) &= 0.95\\
+P(5.155519 \leq \mu \leq 5.644480) &= 0.95\\
+= [5.155519,5.644480]\\
+\end{aligned}$
+
+(b) Repeat these calculations for a 99% confidence interval. How do the results compare with those in part(a)?
+
+$\begin{aligned}
+P(\bar{X}-Z_{\frac{\alpha}{2}}\frac{\sigma_{x}}{\sqrt{n}} \leq \mu \leq \bar{X}+Z_{1-\frac{\alpha}{2}}\frac{\sigma_{x}}{\sqrt{n}} ) &= 1 - \alpha\\
+P(5.4 - 2.57(\frac{2.3}{\sqrt{340}}) \leq \mu \leq 5.4 + 2.57(\frac{2.3}{\sqrt{340}})) &= 0.99\\
+P(5.079431 \leq \mu \leq 5.720569) &= 0.99\\
+= [5.079431,5.720569]\\
+\end{aligned}$
+
+In comparison the confidence interval for part (b) is alot wider than the confidence interval in part (a). There is a correlation present, where the larger the level of confidence (1-$\alpha$) gets, the lengthier the confidence interval range gets.
+
+(6.27).
+
+  -   The Student Monitor surveys 1200 undergraduates from four-year colleges and universities throughout the United States semiannually to understand trends among college students. Recently, the Student Monitor reported that the average amount of time listening to the radio per week was 11.5 hours. Of the 1200 students surveyed, 83% said that they listened to the radio, so this collection of listening times has around
+204 (17%×1200) zeros. Assume that the standard deviation is 8.3 hours.
+(a) Give a 95% confidence interval for the mean time spent per week listening to the radio.
+
+
+$\begin{aligned}
+P(\bar{X}-Z_{\frac{\alpha}{2}}\frac{\sigma_{x}}{\sqrt{n}} \leq \mu \leq \bar{X}+Z_{1-\frac{\alpha}{2}}\frac{\sigma_{x}}{\sqrt{n}} ) &= 1 - \alpha\\
+P(11.5-1.96(\frac{8.3}{\sqrt{1200}}) \leq \mu \leq 11.5+1.96(\frac{8.3}{\sqrt{1200}}) ) &= 0.95\\
+P(11.030383 \leq \mu \leq 11.969617 ) &= 0.95\\
+= [11.030383,11.969617]\\
+\end{aligned}$
+
+(b) Is it true that 95% of the 1200 students reported weekly times that lie in the interval you found in part
+(a)? Explain your answer.
+
+No because this is a range of values for the mean time spent, not for the times spend by each individual. The confidence interval provides the range for capturing the sample mean which approximates the mean.
+
+
+(c) It appears that the population distribution has many zeros and is skewed to the right. Explain why the
+confidence interval based on the Normal distribution should nevertheless be a good approximation.
+
+It should nevertheless be a good approximation because of the Central Limit Theorem, which states that for large samples, in this case it is 1200 students, there is more information on the population, meaning that there more precision in approximating the true population mean through the sample mean. 
+
+
+(6.28).
+
+  -   Refer to the previous exercise.
+(a) Give the mean and standard deviation in minutes.
+
+
+The mean = $\mu$ = 11.5 * 60 = 690 minutes and the standard deviation = $\sigma$ = 8.3 * 60 = 498.
+
+
+(b) Calculate the 95% confidence interval in minutes from your answer to part (a).
+
+
+$\begin{aligned}
+P(\bar{X}-Z_{\frac{\alpha}{2}}\frac{\sigma_{x}}{\sqrt{n}} \leq \mu \leq \bar{X}+Z_{1-\frac{\alpha}{2}}\frac{\sigma_{x}}{\sqrt{n}} ) &= 1 - \alpha\\
+P(690-1.96(\frac{498}{\sqrt{1200}}) \leq \mu \leq 690+1.96(\frac{498}{\sqrt{1200}})) &= 0.95\\
+P(661.822997 \leq \mu \leq 718.177003 ) &= 0.95\\
+= [661.822997,718.177003]\\
+\end{aligned}$
+
+(c) Explain how you could have directly calculated this interval from the 95% interval that you calculated
+in the previous exercise.
+
+
+You could have directly calculated this interval from the 95% interval calculated in (a) by multiplying both bounds by 60, for 60 minutes in an hour.
+
+
+
+
+
+
+
+
+

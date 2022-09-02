@@ -1,0 +1,228 @@
+---
+title: "Homework 4"
+author: "Stephaan Silne"
+date: "10/8/2020"
+output:
+  html_document: default
+  word_document: default
+---
+
+(6.58) Computing the P-value.
+
+  -   A test of the null hypothesis H0:μ=μ0 gives test statistic z=1.77.
+        
+  (a) What is the P-value if the alternative is Ha:μ>μ0?
+      P(Z > z) = 1 - $\phi$(|1.77|) = 
+      
+```{r,echo = FALSE}
+1 - pnorm(1.77)
+```
+        
+  (b) What is the P-value if the alternative is Ha:μ<μ0?
+      P(Z < z) = $\phi$(-|1.77|) = 
+      
+```{r, echo = FALSE}
+pnorm(-1.77)
+```
+
+        
+
+(6.59) More on computing the P-value.
+  -   A test of the null hypothesis H0:μ=μ0 gives test statistic z=−1.69.
+  (a) What is the P-value if the alternative is Ha:μ>μ0?
+      P(Z > z) = 1 - $\phi$(|-1.69|) = 
+```{r, echo = FALSE}
+1 - pnorm(1.69)
+```
+
+  (b) What is the P-value if the alternative is Ha:μ<μ0?
+      P(Z < z) = $\phi$(-|-1.69|)
+```{r, echo = FALSE}
+pnorm(-abs(-1.69))
+```
+
+  (c) What is the P-value if the alternative is Ha:μ≠μ0?
+      P(Z > z) = 2$\phi$(-|-1.69|)
+```{r, echo = FALSE}
+2 * pnorm(-abs(-1.69))
+```
+
+
+(6.71)
+
+(a).
+$\begin{aligned}
+z &= \frac{\bar{x} - \mu_0}{\frac{\sigma}{\sqrt{n}}}\\
+z &= \frac{127.8 - 115}{\frac{30}{\sqrt{25}}}\\
+z &= 2.133333\\
+P(Z > z) &= 1 - \phi(|2.133333|)\\
+\end{aligned}$
+
+```{r, echo = FALSE}
+pval <- 1 - pnorm(abs(2.133333))
+sprintf("The P-value of the hypothesis test is: %f", pval)
+```
+
+Since our p-value of $0.016449$ is less than 0.05, it can be considered to be statistically significant, thus there is evidence to support the $H_a$ that the average SSHA scores of the older students is much higher than $115$.
+
+(b).
+  -   The two important assumptions that had to be made are that: (1) the sample given was unbiased and was a representative of the population of older students, (2) that the distribution of the sample means is normally distributed for SRS's of size n. The assumption that is most important in validating the conclusion is that the sample was a SRS and unbiased as this assumption allowed us to use the notion that the p-value of $0.016449$ was significant without being directly given the significance level.
+  
+
+(6.73).
+
+(a).
+  -   The null hypothesis $H_o$ is if the mean difference $\mu_d = 0$; while the alternative hypothesis is if the mean difference $\mu_d \neq 0$. 
+
+
+(b).
+```{r, echo = FALSE}
+mns <- c(0.6,6.4,3.6,0.6,0.6,2.6,0.5,5.9,1.5,5.5,7.2)
+sprintf("The mean of the differences is : %f" ,mean(mns))
+```
+
+$\begin{aligned}
+z &= \frac{\bar{x} - \mu_0}{\frac{\sigma}{\sqrt{n}}}\\
+z &= \frac{3.181818 - 0}{\frac{3.0}{\sqrt{20}}}\\
+z &= 4.74317\\
+P(|Z| \geq |z|) &= 2 \cdot \phi(-|4.74317|)\\
+\end{aligned}$
+```{r, echo = FALSE}
+pvl <- 2 * pnorm(-abs(4.74317))
+sprintf("The P- value of the hypothesis test is: %f", pvl)
+```
+
+  -   With the p-value being much smaller than 0.05, there is strong evidence that the mean difference is statistically significant, meaning the computer's reported fuel efficiency does differ from the driver's computed result.  
+
+
+
+(6.99).
+
+(a).
+$\begin{aligned}
+z &= \frac{\bar{x} - \mu_0}{\frac{\sigma}{\sqrt{n}}}\\
+z &= \frac{2453.7 - 2403.7}{\frac{880}{\sqrt{100}}}\\
+z &= 0.625\\
+P(Z > z) &= 1 - \phi(|0.625|)\\
+\end{aligned}$
+
+```{r, echo = FALSE}
+pvalu <- 1 - pnorm(abs(0.625))
+sprintf("The P- value of the hypothesis test is: %f", pvalu)
+```
+
+
+(b).     
+$\begin{aligned}
+z &= \frac{\bar{x} - \mu_0}{\frac{\sigma}{\sqrt{n}}}\\
+z &= \frac{2453.7 - 2403.7}{\frac{880}{\sqrt{500}}}\\
+z &= 1.397542\\
+P(Z > z) &= 1 - \phi(|1.397542|)\\
+\end{aligned}$
+
+```{r, echo = FALSE}
+val <- 1 - pnorm(abs(1.397542))
+sprintf("The P- value of the hypothesis test is: %f", val)
+```
+
+
+(c).
+$\begin{aligned}
+z &= \frac{\bar{x} - \mu_0}{\frac{\sigma}{\sqrt{n}}}\\
+z &= \frac{2453.7 - 2403.7}{\frac{880}{\sqrt{500}}}\\
+z &= 3.125\\
+P(Z > z) &= 1 - \phi(|3.125|)\\
+\end{aligned}$
+
+```{r, echo = FALSE}
+valu <- 1 - pnorm(abs(3.125))
+sprintf("The P- value of the hypothesis test is: %f", valu)
+```
+
+
+
+(6.120).
+
+(a).
+
+  -   Type I error = P(rejecting $H_o$| $H_o$ is true)
+
+$\begin{aligned}
+&= P(X \leq 2)\\
+&= P(X = 0) + P(X = 1)\\
+&= 0.2\\
+\end{aligned}$
+
+
+(b).
+
+  -   Type II error = P(not rejecting $H_o$ | $H_o$ is false)
+
+$\begin{aligned}
+&= 1 - P(X \leq 2)\\
+&= P(X > 2) = P(X = 3) + P(X = 4) + P(X = 5) + P(X = 6)\\
+&= 0.1 + 0.1 + 0.1 + 0.1\\
+&= 0.4
+\end{aligned}$
+
+
+
+(7.22)
+
+(a).
+
+  - The degrees of freedom for the t-statistic is $n - 1 = 16 - 1 = 15$.
+
+(b).
+
+  - The t-statistic value of $2.15$ sits between $[2.131,2.602]$.
+  
+(c).
+
+  - The p-value of the test falls between $[0.01,0.025]$.
+  
+  
+(d).
+
+  -   At at 5% significance level, the t-statistic is significantly significant, since $0.0241 < 0.05 = \alpha$; however, at a significance level of 1%, the statistic is not statistically significant, as $0.0241 > 0.01 = \alpha$.
+  
+  
+(e).
+
+```{r, echo = FALSE}
+tpval <- 1 - pt(abs(2.15),15)
+sprintf("The exact p-value for the t - test is: %f", tpval)
+```
+
+
+
+  
+  
+(7.23)
+
+(a).
+
+  - The degrees of freedom for the t-statistic is $n - 1 = 27 - 1 = 26$.
+
+(b).
+
+  - The t-statistic value of $2.01$ sits between $[1.706,2.056]$.
+  
+(c).
+
+  - The p-value of the test falls between $[0.025,0.05]$.
+  
+  
+(d).
+
+  -   At at 5% significance level, the t-statistic is $\textbf{not}$ significantly significant, since $p = 0.05491 > 0.05 = \alpha$; thus at a significance level of 1%, the statistic is definitely not statistically significant, as $p = 0.05491 > 0.01 = \alpha$.
+  
+  
+(e).
+
+```{r, echo = FALSE}
+ptv <- 2 * pt(-abs(2.01),26)
+sprintf("The exact p-value for the t - test is: %f", ptv)
+```
+
+

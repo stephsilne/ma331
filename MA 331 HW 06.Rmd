@@ -1,0 +1,206 @@
+---
+title: "Hw 06"
+author: "Stephaan Silne"
+date: "10/22/2020"
+output:
+  html_document: default
+  word_document: default
+---
+
+(9.37).
+
+  (a).
+```{r, echo = FALSE}
+
+row1 <- c(51,6,57)
+row2 <- c(12,5,17)
+row3 <- c(4,1,5)
+row4 <- c(67,12,79)
+col1 <- c(51,12,4,67)
+col2 <- c(6,5,1,12)
+col3 <- c(57,15,5,79)
+strat <- rbind(row1,row2,row3,row4)
+strat <- cbind(col1,col2,col3)
+colnames(strat) <- c('allowed','not allowed', 'TOTAL')
+rownames(strat) <- c('small','medium','large','TOTAL')
+names(dimnames(strat)) <- c('stratum','sampled claims')
+strat
+```
+
+(b).
+```{r, echo = FALSE}
+
+row1 <- c(10.53)
+row2 <- c(29.41)
+row3 <- c(20)
+col1 <- c(10.53, 29.41, 20)
+pc <- rbind(row1,row2,row3)
+pc <- cbind(col1)
+colnames(pc) <- c('% not allowed')
+rownames(pc) <- c('small', 'medium', 'large')
+names(dimnames(pc)) <-c('stratum', 'sampled claims')
+pc
+```
+
+(c).
+To perform the significance test, the medium and large strata should be combined because small sample sizes are more likely to commit a type II error or miss the effect that exists in the data and are more likely to distribute away from normality. 
+
+(d).
+  The null hypothesis $H_o:$ the is no relationship between the size of the claim and whether a claim is allowed or not.
+  
+(e.)
+```{r, echo = FALSE}
+row1 <- c(51,6)
+row2 <- c(16,6)
+col1 <- c(51,16)
+col2 <- c(6,6)
+strats0 <- rbind(row1,row2)
+strats0 <- cbind(col1,col2)
+colnames(strats0) <- c('allowed','not allowed')
+rownames(strats0) <- c('small','medium & large')
+names(dimnames(strats0)) <- c('stratum','observed value table')
+strats0
+
+```
+
+```{r, echo = FALSE}
+row1 <- c(48.34177,8.658277)
+row2 <- c(18.658227,3.341772)
+col1 <- c(48.34177,18.658227)
+col2 <- c(8.658277,3.341772)
+strats <- rbind(row1,row2)
+strats <- cbind(col1,col2)
+colnames(strats) <- c('allowed','not allowed')
+rownames(strats) <- c('small','medium & large')
+names(dimnames(strats)) <- c('stratum','expected value table')
+strats
+
+```
+
+$\begin{aligned}
+\chi^2 &= \sum^{k}_{i=1}\frac{n_i - np_i^2}{np_i}\\
+\chi^2 &= \frac{(51-48.34177)^2}{48.34177} + \frac{(6-8.65822)^2}{8.65822} + \frac{(16-18.658227)^2}{18.658227} + \frac{(6-3.341772)^2}{3.341772}\\
+\chi^2 &= 3.456\\
+\end{aligned}$
+```{r, echo = FALSE}
+df <- 1
+pval <- 1 - pchisq(3.456,1)
+sprintf("the degrees of freedom are: %f", df)
+sprintf("the P value is: %f", pval)
+```
+
+There is not quite strong enough evidence to reject $H_o$ that there is no relationship between the size of the claim and whether a claim is allowed or not.
+
+
+
+(9.38).
+
+(a).
+The total number of claims that would not be allowed if all claims in the small stratum were audited would be $ 0.1053 \cdot 3342 = 351.9126$.The total number of claims that would not be allowed if all claims in the medium stratum were audited would be $ 0.2941 \cdot 246 = 72.3486$.The total number of claims that would not be allowed if all claims in the large stratum were audited would be $ 0.2 \cdot 58 = 11.6$.
+
+(b).
+The standard error of the samples of strata are:
+$\begin{aligned}
+SE &= \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}\\
+SE_{s} &= \sqrt{\frac{0.1053(1-0.1053)}{57}} = 0.0406\\
+SE_{m} &= \sqrt{\frac{0.2941(1-0.2941)}{17}} = 0.1105\\
+SE_{l} &= \sqrt{\frac{0.2(1-0.2)}{5}} = 0.1789 \\
+\end{aligned}$
+
+The standard errors of the populations of strata are:
+$\begin{aligned}
+SE_{(pop)} &= N \cdot SE\\
+SE_{(s)} &= 3342 \cdot 0.0406 = 135.8485\\
+SE_{(m)} &= 246 \cdot 0.1105 = 27.1855\\
+SE_{(l)} &= 58 \cdot 0.1789 = 10.3754\\
+\end{aligned}$
+
+At a $95$% confidence level for $z^* = 1.96$,
+$\begin{aligned}
+SE_{(s)} &= 1.96 \cdot 3342 \cdot 0.0406 = 266.26306\\
+SE_{(m)} &= 1.96 \cdot 246 \cdot 0.1105 = 53.28358\\
+SE_{(l)} &= 1.96 \cdot 58 \cdot 0.1789 = 20.335784\\
+\end{aligned}$
+
+
+
+(9.50).
+The probabilities for the five intervals are:
+$\begin{aligned}
+z \leq -0.6 &\longrightarrow 0.2743\\
+-0.6 \leq z \leq -0.1 &\longrightarrow 0.4602-0.2743 = 0.1859\\
+-0.1 \leq z \leq 0.1 &\longrightarrow 0.5398 - 0.4602 = 0.0796\\
+0.1 \leq z \leq 0.6 &\longrightarrow 0.7257 - 0.5398 = 0.1859\\
+z > 0.6 &\longrightarrow 1 - 0.7257 = 0.2743\\
+\end{aligned}$
+
+The expected number for each interval given $n = 500$ is:
+$\begin{aligned}
+E &= 500 \cdot 0.2743 = 137.15\\
+E &= 500 \cdot 0.1859 = 92.95\\
+E &= 500 \cdot 0.0796 = 39.8\\
+E &= 500 \cdot 0.1859 = 92.95\\
+E &= 500 \cdot 0.2743 = 137.15\\
+\end{aligned}$
+
+The chi test for the goodness of fit is:
+$\begin{aligned}
+\chi^2 &= \sum^{k}_{i=1}\frac{(n_i - np_i)^2}{np_i}\\
+\chi^2 &= \frac{(139 - 137.15)^2}{137.15} + \frac{(102 - 92.95)^2}{92.95} + \frac{(41 - 39.8)^2}{39.8} + \frac{(78 - 92.95)^2}{92.95} + \frac{(140 - 137.15)^2}{137.15}\\
+\chi^2 &= 3.4061\\
+\end{aligned}$
+
+```{r, echo = FALSE}
+
+dff <- 4
+pv <- 1 - pchisq(3.4061, 4)
+sprintf("the degrees of freedom are: %f", dff)
+sprintf("the P-value is: %f", pv)
+
+```
+
+Given that $P >> 0.05$, it can be concluded that the random numbers from the computer software coincide with the hypothesized normal distribution. 
+
+
+(9.51).
+
+```{r, echo = FALSE}
+
+smp <- rnorm(500,0,1)
+```
+
+The probabilities for the five intervals are:
+$\begin{aligned}
+0 \leq z \leq 0.2 &\longrightarrow 0.0793\\
+0.2 \leq z \leq 0.4 &\longrightarrow 0.0761\\
+0.4 \leq z \leq 0.6 &\longrightarrow 0.0703\\
+0.6 \leq z \leq 0.8 &\longrightarrow 0.0624\\
+0.8 \leq z \leq 1 &\longrightarrow 0.0532\\
+\end{aligned}$
+
+The expected number for each interval given $n = 500$ is:
+$\begin{aligned}
+E &= 500 \cdot 0.0793 = 39.65\\
+E &= 500 \cdot 0.0761 = 38.05\\
+E &= 500 \cdot 0.0703 = 35.15\\
+E &= 500 \cdot 0.0624 = 31.2\\
+E &= 500 \cdot 0.0532 = 26.6\\
+\end{aligned}$
+
+The chi test for the goodness of fit is:
+$\begin{aligned}
+\chi^2 &= \sum^{k}_{i=1}\frac{(n_i - np_i)^2}{np_i}\\
+\chi^2 &= \frac{(50 - 39.65)^2}{39.65} + \frac{(35 - 38.05)^2}{38.05} + \frac{(29 - 35.15)^2}{35.15} + \frac{(25 - 31.2)^2}{31.2} + \frac{(27 - 26.6)^2}{26.6}\\
+\chi^2 &= 5.248547\\
+\end{aligned}$
+
+```{r, echo = FALSE}
+
+dff <- 4
+pv <- 1 - pchisq(5.248547, 4)
+sprintf("the degrees of freedom are: %f", dff)
+sprintf("the P-value is: %f", pv)
+
+```
+
+Given that $P >> 0.05$, it can be concluded that the random numbers from the computer software coincide with the hypothesized normal distribution. 

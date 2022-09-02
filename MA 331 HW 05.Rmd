@@ -1,0 +1,282 @@
+---
+title: "HW 05"
+author: "Stephaan Silne"
+date: "10/16/2020"
+output:
+  html_document: default
+  word_document: default
+---
+
+(7.71).
+
+(a). Graphical Representations of Each Group's Data
+
+```{r, echo = FALSE}
+
+ntrl <- c(0.00,2.00,0.00,1.00,0.50,0.00,0.50,2.00,1.00,0.00,0.00,0.00,0.00,1.00)
+sad <- c(3.00,4.00,0.50,1.00,2.50,2.00,1.50,0.00,1.00,1.50,1.50,2.50,4.00,3.00,3.50,1.00,3.50)
+grps <- c("Neutral Group", "Sad Group")
+boxplot(ntrl,sad, names =grps, ylab = "Purchasing Prices ($)", main = "Misery is Not Miserly Phenomenon Data" )
+qqnorm(y = ntrl, ylab = "Nuetral Purchasing Prices ($)")
+qqnorm(y = sad, ylab = "Sad Purchasing Prices ($)")
+```
+
+  - Use of the $\textit{t}$ procedure is appropriate here as both sets of data do not appear to have any outliers and are approximately normally distributed given the normal quantile plots. There does not appear to be any deviations from normality that would prevent the use of the $\textit{t}$ procedure. 
+  
+
+
+(b). 
+
+```{r, echo = FALSE}
+mn <- mean(ntrl)
+ms <- mean(sad)
+szn <- length(ntrl)
+szs <- length(sad)
+```
+
+
+```{r, echo = FALSE}
+sdn <- sd(ntrl)
+sds <- sd(sad)
+tbl <- matrix(c(szn,szs,mn,ms,sdn,sds), ncol = 3, nrow = 2)
+colnames(tbl) <- c("n", "mean", "sd")
+rownames(tbl) <- c("neutral", "sad")
+tbl <- as.table(tbl)
+tbl
+```
+
+
+(c).
+
+  - The null hypothesis $H_o : \mu_1 = \mu_2$, while the alternative hypothesis is $H_a : \mu_1 < \mu_2$, as the study wants to know if those who are sad spend more money. 
+  
+
+(d).
+
+  - The testing statistic $t$ is:
+  
+$\begin{aligned}
+t &= \frac{(\bar{X} - \bar{Y})}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}\\
+t &= \frac{(0.5714286 - 2.117647)}{\sqrt{\frac{0.7300459^2}{14} + \frac{1.244104^2}{17}}}\\
+t &= -4.303097\\
+\end{aligned}$
+
+  - with degrees of freedom $n_1 + n_2 -2 = 31 - 2 = 29$,
+
+
+
+```{r, echo = FALSE}
+tstat <- -4.303097
+tst <- pt(-abs(tstat), 29)
+sprintf("The P value for the t - statistic is : %f", tst)
+```
+
+  - given that the P-value $= 0.000087 < \alpha = 0.05$, the is statistical significance between two means, therefore it can be concluded that sadness is correlated to more spending. 
+  
+
+(e).
+
+  - The 95% confidence interval for $(\mu_1 - \mu_2)$ is:
+  
+$\begin{aligned}
+P((\bar{x} - \bar{y}) - t_{\frac{\alpha}{2}} \sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}} \leq &(\mu_1 - \mu_2) \leq (\bar{x} - \bar{y}) + t_{\frac{\alpha}{2}} \sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}) = 0.95\\
+P((0.5714286 - 2.1176471) - 2.045 \sqrt{\frac{0.7300459^2}{14} + \frac{1.2441037^2}{17}} \leq &(\mu_1 - \mu_2) \leq (0.5714286 - 2.1176471) + 2.045 \sqrt{\frac{0.7300459^2}{14} + \frac{1.2441037^2}{17}}) = 0.95\\
+\text{CI = }[0.811395107991&,2.28104189201]\\
+\end{aligned}$
+
+
+
+(7.89).
+
+
+(a). 
+
+  - The null hypothesis $H_o : \mu_1 = \mu_2$, while the alternative hypothesis is $H_a : \mu_1 > \mu_2$.
+  
+  - the t- test statistic is:
+  
+
+$\begin{aligned}
+t &= \frac{(\bar{X} - \bar{Y})}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}\\
+t &= \frac{(13.3 - 12.4)}{\sqrt{\frac{1.7^2}{23} + \frac{1.8^2}{19}}}\\
+t &= 1.653734\\
+\end{aligned}$
+```{r, echo = FALSE}
+
+tsats <- 1.653734
+pval <- 1 - pt(abs(tsats), 40)
+sprintf("The P value for the t- test statistic is: %f", pval)
+```
+
+  - Given that the P-value $= 0.053005 > 0.05 = \alpha$, the null hypothesis is accepted, therefore, the mean hemoglobin is not higher among breast-fed babies.
+  
+  
+(b).
+
+  - The confidence interval for $(\mu_1 - \mu_2)$ is:
+  
+$\begin{aligned}
+(\bar{x} - \bar{y}) - t_{\frac{\alpha}{2}} \sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}} \leq &(\mu_1 - \mu_2) \leq (\bar{x} - \bar{y}) + t_{\frac{\alpha}{2}} \sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}\\
+(13.3 - 12.4) - 2.021 \sqrt{\frac{1.7^2}{23} + \frac{1.8^2}{19}} \leq &(\mu_1 - \mu_2) \leq (13.3 - 12.4) + 2.021 \sqrt{\frac{1.7^2}{23} + \frac{1.8^2}{19}}\\
+\text{CI = }[-0.199&,1.994]\\
+\end{aligned}$
+
+(c).
+
+  - The assumptions that the procedures in part(a) and part(b) required in order to be valid were that: the sample means were normally distributed, there was no bias between the two samples (meaning they were simple random samples), that the null hypothesis $H_o$ was true and that the was homogeneity in the variance.
+  
+  
+  
+  
+(7.102).
+
+(a).
+
+  - The $f$ test statistic is:
+  
+$\begin{aligned}
+f &= \frac{S_1^2}{S_2^2}\\
+&= \frac{3.5}{9.1}\\
+&= 0.384615\\
+\end{aligned}$
+
+
+(b).
+
+  - The appropriate value from Table E that is needed to perform the significance test is 2.99.
+
+
+(c).
+
+- It can be concluded that the hypothesis should be accepted as there is no statistical evidence that the two population standard deviations are not equal.
+
+
+(7.122).
+
+(a).
+
+```{r, echo = FALSE}
+
+group1 <- c(48.86,50.60,51.02, 47.99, 54.20,50.66 ,45.91 ,48.79,47.76 ,51.13)
+group2 <- c(48.88,52.63,52.55,50.94,53.02,50.66,47.78,48.44,48.92,51.63)
+
+mean1 <- mean(group1)
+vr1 <- var(group1)
+mean2 <- mean(group2)
+vr2 <- var(group2)
+df <- length(group1) + length(group2) - 2
+
+
+sprintf("The mean of Group 1 is: %f", mean1)
+sprintf("The variance of Group 1 is: %f", vr1)
+
+sprintf("The mean of Group 2 is: %f", mean2)
+sprintf("The variance of Group 2 is: %f", vr2)
+sprintf("the degrees of freedom are: %f", df)
+```
+
+
+$\begin{aligned}
+t &= \frac{(\bar{X} - \bar{Y})}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}\\
+  &= \frac{(49.692 - 50.545)}{\sqrt{\frac{2.317896^2}{10} + \frac{1.924360^2}{10}}}\\
+t &= -0.895378\\
+\end{aligned}$
+
+```{r, echo = FALSE}
+
+pvl <- 2 * pt(-abs(-0.895378), 18)
+sprintf("The P value for the two-sample test statistic is: %f", pvl)
+```
+
+
+(b).
+
+```{r, echo = FALSE}
+
+smplmn <- abs(mean1 - mean2)
+smplvr <- vr1 + vr2
+dfp <- 19
+sprintf("The mean of difference is: %f", smplmn)
+sprintf("The variance of difference is: %f", smplvr)
+sprintf("The degrees of freedom are: %f", dfp)
+```
+
+
+$\begin{aligned}
+t &= \frac{X_{diff}}{\frac{s_{diff}}{\sqrt{n}}}\\
+&= \frac{0.853}{\frac{\sqrt{9.075801}}{\sqrt{20}}}\\
+&= -1.266256\\
+\end{aligned}$
+
+```{r, echo = FALSE}
+
+pp <- 2 * pt(-abs(-1.266256),19)
+sprintf("The P value for the paired sample test statistic is: %f", pp)
+```
+
+
+(c).
+
+  - The P value for the paired test is smaller than that of the two sample test, as is the mean and standard deviation. However, for the degrees of freedom, it is seen to be larger for the paired test than the two sample tests. This is due to the assumption for the two sample test that both samples are SRS and independent, while for the paired test, it is the opposite. 
+
+
+
+
+(8.71). 
+
+
+(a). 
+
+$\begin{aligned}
+\hat{p} &= \frac{X}{n}
+\hat{p}_{females} &= \frac{48}{60} = 0.8\\
+\hat{p}_{males} &= \frac{52}{132} = 0.3\bar{9}\\
+\end{aligned}$
+
+
+(b).
+
+  -   the confidence interval for the difference $p_1 - p_2$ is:
+  
+$\begin{aligned}
+P((\hat{p}_1 -\hat{p}_2) - z_{\frac{1-\alpha}{2}} \cdot SE \leq (p_1 - p_2) \leq (\hat{p}_1 -\hat{p}_2) + z_{\frac{1-\alpha}{2}} \cdot SE) = 1 - \alpha\\
+\end{aligned}$
+
+
+$\begin{aligned}
+SE &= \sqrt{ \frac{\hat{p}_1 (1-\hat{p}_1)}{n_1} + \frac{\hat{p}_2 (1-\hat{p}_2)}{n_2}}\\
+&=  \sqrt{ \frac{0.8 (0.2)}{60} + \frac{0.39(0.61)}{132}}\\
+&= 0.06690\\
+\end{aligned}$
+
+$\begin{aligned}
+&\longrightarrow P((0.8 -0.39) - 1.64 \cdot 0.06690 \leq (p_1 - p_2) \leq (0.8 -0.39) + 1.64 \cdot 0.06690) = 0.9\\
+&\text{CI = } [0.300284,0.519716]\\
+\end{aligned}$
+
+
+
+(c.)
+
+  -   The test statistic is:
+  
+
+$\begin{aligned}
+z &= \frac{\hat{p}_1 - \hat{p}_2}{\sqrt{ \frac{\hat{p}_1 (1-\hat{p}_1)}{n_1} + \frac{\hat{p}_2 (1-\hat{p}_2)}{n_2}}}\\
+z &= \frac{(0.8-0.39)}{0.06690}\\
+&= 6.128550\\
+\end{aligned}$
+
+```{r, echo = FALSE}
+
+pvalue <- 2 * pnorm(-abs(6.128550))
+sprintf("The P-value of the test statistic is: %f", pvalue)
+
+```
+
+ - It can be concluded that there is a statistical significance between the proportions and that the two proportions are different, given that the p-value $= 0.0000 < \alpha$. 
+
+
+
+
+

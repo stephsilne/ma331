@@ -1,0 +1,266 @@
+---
+title: "MA 331 HW 08"
+author: "Stephaan Silne"
+date: "11/28/2020"
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r, echo = FALSE}
+
+library(readxl)
+w_qual <- read_excel("C:/Users/Stephaan/Downloads/Water-Quality.xlsx")
+
+```
+
+(10.32).
+
+  -   a. 
+```{r, echo = FALSE}
+
+
+ibi_mean <- mean(w_qual$IBI)
+area_mean <- mean(w_qual$Area)
+ibi_std <- sd(w_qual$IBI)
+area_std <- sd(w_qual$Area)
+
+sprintf("The mean of the variable Index of Biotic Integrity is: %f", ibi_mean)
+sprintf("The mean of the variable Area is: %f", area_mean)
+sprintf("The standard deviation of the variable Index of Biotic Integrity is: %f", ibi_std)
+sprintf("The standard deviation of the variable Area is: %f", area_std)
+
+sprintf("The Stem and Leaf plot for the Index of Biotic Integerity is:")
+ibi_plt <- stem(w_qual$IBI)
+sprintf("The Stem and Leaf plot for Area is:")
+area_plt <- stem(w_qual$Area)
+```
+
+-   The data for Index of Biotic Integrity is left skewed, while the data for Area is rightly skewed. There do not appear to be any abnormalities in the data such as outliers or large deviations amongst both samples.
+
+
+  -   b.
+```{r, echo = FALSE}
+
+plt1 <- plot(w_qual$IBI ~ w_qual$Area, main = "Scatter Plot between IBI and Area", xlab = "Area", ylab = "IBI")
+```
+  
+-   There does not appear to be a strong association between Index of Biotic Integrity and Area, although there is a large amount of scatter for the IBI in relation to Area and there is evidence of a positive correlation in the scatter.
+
+-   c.
+  The linear regression model given observations $(X,y)$, the explanatory variable (Area) and response variable (IBI) is observed as $y_i = \beta_0 + \beta_1x_i + \epsilon_i$ with random errors $\epsilon_i \sim N(0,\sigma^2)$  for $i = 1, \cdots , 49$.
+  
+-   d.
+  To examine the relationship between IBI and Area, a significance test for the regression parameters msut be done. The null hypothesis is $H_0: \beta_1 = 0$, while the alternative hypothesis $H_a : \beta_1 \neq 0$. $\hat{\beta_1} \sim N(\beta_1, \sigma_1^2)$.
+  
+-   e. 
+  The parameters for the simple linear regression model of IBI in response to Area are shown below:
+```{r, echo = FALSE}
+lm1 <- lm(w_qual$IBI ~ w_qual$Area, data=w_qual)
+summary(lm1)
+coefficients(summary(lm1))
+```
+  As for the variance, based on residuals $\epsilon \sim y_i - \hat{y_i}$ and estimating $\sigma^2$, is observed as,
+$\begin{align}
+S^2 = \frac{1}{n-2}\sum^{n}_{i=1}(y_i - \hat{y_i})^2\\
+\end{align}$
+  Thus the variance of the random error is:
+```{r, echo = FALSE}
+n = nrow(w_qual)
+(n-1)*var(residuals(summary(lm1)))/(n-2)
+```
+  For the hypothesis testing on the regression parameter $\beta_1$, the testing statistic $T$ observed as $T = \frac{\hat{\beta_1}}{SE_{\hat{\beta_1}}} \sim T_{n-2}$, where $SE_{\hat{\beta_1}} = \sqrt{\frac{1}{\sum_{i=1}^{n}(x_i - \bar{x})S^2}}$, is $T = 3.415471$.
+  As for the p-value, $P(|T| > |t|) = 2[1-pt(|t|, n-2)] = 2[1-pt(|3.415471|, 49-2)] = 1.321791e-03$. Since $1.321791e-03 << 0.05 = \alpha$, the null hypothesis can be rejected thus giving enough statistical evidence that $\beta_1 \neq 0$. Hence, the linear regression model for predicting IBI based on Area, is $\hat{y_i} = 52.922958 + 0.460155x_i$ with standard deviation $s = 16.534648$.
+  
+-   f. 
+
+```{r, echo = FALSE}
+
+plot(residuals(summary(lm1)) ~ w_qual$Area, main = "Plot of Residuals Versus Area", ylab = "Residuals", xlab = "Area")
+abline(lm(residuals(summary(lm1))~w_qual$Area, data = w_qual), col = "red")
+
+```
+
+  The plot of residuals does not exhibit any correlation or association, as there is a uniform spread. A common standard deviation can be assumed and there do not appear to be any influential outliers or observations. There does appear to be a slight division in the $x = 40$ mark on the scatter plot. 
+  
+-   g.
+
+```{r, echo = FALSE}
+qqnorm(residuals(summary(lm1)), main = "QQ Plot of Residuals", ylab = "Residuals")
+qqline(residuals(summary(lm1)), col = "red")
+hist(residuals(summary(lm1)), main = "Histogram of Residuals", xlab = "Residuals")
+```
+
+  The residuals do appear to be approximately normal, given the residuals are close to the straight straight horizontal line on the scatter plot at $\mu = 0$, showing no curve in representation of the linear relationship. In addition, in the QQ-plot and histogram, the residuals appear to linear and somewhat left skewed and do not show any extreme outliers; and with the large sample size, the residuals can be assumed normal.
+
+-   h.
+
+  The assumptions for the analysis of these data using the linear regression model in part (c) is reasonable, as the plot of residuals do not show any particular patterns, show linearity and symmetry about the mean of 0 and a common standard deviation. 
+  
+  
+  
+(10.33).
+
+
+  -   a. 
+```{r, echo = FALSE}
+
+
+ibi_mean <- mean(w_qual$IBI)
+forest_mean <- mean(w_qual$Forest)
+ibi_std <- sd(w_qual$IBI)
+forest_std <- sd(w_qual$Forest)
+
+sprintf("The mean of the variable Index of Biotic Integrity is: %f", ibi_mean)
+sprintf("The mean of the variable percent Forest is: %f", forest_mean)
+sprintf("The standard deviation of the variable Index of Biotic Integrity is: %f", ibi_std)
+sprintf("The standard deviation of the variable percent Forest is: %f", forest_std)
+
+sprintf("The Stem and Leaf plot for the Index of Biotic Integerity is:")
+ibi_plt <- stem(w_qual$IBI)
+sprintf("The Stem and Leaf plot for percent Forest is:")
+area_plt <- stem(w_qual$Forest)
+```
+
+-   The data for Index of Biotic Integrity is left skewed, while the data for percent Forest is rightly skewed. There do not appear to be any abnormalities in the data such as outliers or large deviations amongst both samples.
+
+  -   b.
+```{r, echo = FALSE}
+
+plt1 <- plot(w_qual$IBI ~ w_qual$Forest, main = "Scatter Plot between IBI and Percent Forest", xlab = "Forest", ylab = "IBI")
+```
+  
+-   There is a weak positive association amongst the data, with there being more scatter amongst the IBI in respect to the small data in percent Forest.
+
+-   c.
+  The linear regression model given observations $(X,y)$, the explanatory variable (percent Forest) and response variable (IBI) is observed as $y_i = \beta_0 + \beta_1x_i + \epsilon_i$ with random errors $\epsilon_i \sim N(0,\sigma^2)$  for $i = 1, \cdots , 49$.
+  
+-   d.
+  To examine the relationship between IBI and percent Forest, a significance test for the regression parameters must be done. The null hypothesis is $H_0: \beta_1 = 0$, while the alternative hypothesis $H_a : \beta_1 \neq 0$. $\hat{\beta_1} \sim N(\beta_1, \sigma_1^2)$.
+  
+-   e. 
+  The parameters for the simple linear regression model of IBI in response to percent Forest are shown below:
+```{r, echo = FALSE}
+lm2 <- lm(w_qual$IBI ~ w_qual$Forest, data=w_qual)
+summary(lm2)
+coefficients(summary(lm2))
+```
+  As for the variance, based on residuals $\epsilon \sim y_i - \hat{y_i}$ and estimating $\sigma^2$, is observed as,
+$\begin{align}
+S^2 = \frac{1}{n-2}\sum^{n}_{i=1}(y_i - \hat{y_i})^2\\
+\end{align}$
+  Thus the variance of the random error is:
+```{r, echo = FALSE}
+n = nrow(w_qual)
+(n-1)*var(residuals(summary(lm2)))/(n-2)
+```
+  The linear regression model for predicting IBI based on Percent Forest, is $\hat{y_i} = 59.907248 + 0.153132x_i$ with standard deviation $s = 17.788035$.For the hypothesis testing on the regression parameter $\beta_1$, the testing statistic $T$ observed as $T = \frac{\hat{\beta_1}}{SE_{\hat{\beta_1}}} \sim T_{n-2}$, where $SE_{\hat{\beta_1}} = \sqrt{\frac{1}{\sum_{i=1}^{n}(x_i - \bar{x})S^2}}$, is $T = 0.153132$.
+  
+  As for the p-value, $P(|T| > |t|) = 2[1-pt(|t|, n-2)] = 2[1-pt(|1.920758|, 49-2)] = 6.084030e-02$. Since $6.084030e-02 >> 0.05 = \alpha$, the null hypothesis cannot be rejected thus giving enough statistical evidence that $\beta_1 = 0$ or that there isn't a substantial linear association between the response variable y and regressor X.
+  
+-   f. 
+
+```{r, echo = FALSE}
+
+plot(residuals(summary(lm2)) ~ w_qual$Forest, main = "Plot of Residuals Versus Percent Forest", ylab = "Residuals", xlab = "Forest")
+abline(lm(residuals(summary(lm2))~w_qual$Forest, data = w_qual), col = "red")
+```
+
+
+  The plot of residuals does not exhibit any association or pattern, and there is a uniform spread. A common standard deviation can be assumed and the plot does not show any extreme outliers. Additionally, the residual plot does show a slight curve in comparison to the straight horizontal line on both sides. 
+  
+-   g. 
+```{r, echo = FALSE}
+qqnorm(residuals(summary(lm2)), main = "QQ Plot of Residuals", ylab = "Residuals")
+qqline(residuals(summary(lm2)), col = "red")
+hist(residuals(summary(lm2)), main = "Histogram of Residuals", xlab = "Residuals")
+```
+  The residuals exhibit a linearity in the QQ-plot, are left skewed (as shown in the histogram) and show a slight curviness around the line of best fit on the QQ-plot; however there are not any distinct AND extreme outliers as shown in the QQ-plot. It can be assumed that the residuals are approximately normal.
+  
+  
+-   h. 
+
+  The assumptions for the analysis of these data using the linear regression model in part (c) is not reasonable, given curvature of the residuals, possible non-normal errors or changes in the standard deviation.
+(10.34).
+
+  -   In examining the relationship between percent Area and IBI, for the significance test for regression parameter $\beta_1$, the testing statistic under $H_0 : \beta_1 = 0$ is $T = 3.415$ and the p-value $= 0.00132 << 0.05$, thus there is enough statistical evidence to show $\beta_1 \neq 0$. The ANOVA test on the significance of the model parameter $\beta_1$ had a testing statistic $F = \frac{MSM}{MSE} = 3.689$ with an  accompanying p-value of $0.001322 << 0.05$, thus in both tests, there is a evidence of a statistical association between percent Area and IBI. As for the relationship between percent Forest and IBI, the T test for $\beta_1$ had a p-value of $0.0608 > 0.05$ along with the F test having a similar p-value $0.06084 > 0.05$, both showing a lack of strong statistical association amongst percent Forest and IBI. With this, I would choose percent Area as a predictor for IBI given the hypothesis testing showing that there is a stronger linear association between percent Area and IBI. In addition, the coefficient of determination $R^2$ for percent Area and IBI are much larger than that of percent Forest and IBI $(0.1988 > 0.07278)$, thus showing percent Area performs better at predicting IBI than percent Forest. Also, the median of the residuals for percent Area and IBI is closer to 0 (closer to normality) than percent Forest and IBI. The residuals for percent Area and IBI were also more normal and less skewed in the QQ-plot and histograms than percent Forest and IBI, also showing it is a better model. 
+  
+(10.35).
+
+```{r, echo = FALSE}
+library(readxl)
+effect1 <- read_excel("C:/Users/Stephaan/Downloads/Book1.xlsx")
+effect2 <- read_excel("C:/Users/Stephaan/Downloads/Book2.xlsx")
+
+lm3 <- lm(effect1$IBI ~ effect1$Forest, data=effect1)
+summary(lm3)
+
+lm4 <- lm(effect2$IBI ~ effect2$Forest, data=effect2)
+summary(lm4)
+
+```
+
+-   As shown above, for the significance test on parameter $\beta_1$, where $H_0: \beta_1 = 0$ and $H_a: \beta_1 \neq 0$, compared to the original p-value $0.0608$, effect (1) decreases the p-value to $0.000309 << 0.05$ making the association more significant, while effect (2) increases the p-value to $0.54 >> 0.05$ making the linear association between percent Forest and IBI less significant. This shows that outliers have a large influence on the capability of a explanatory variable to be a good predictor of a response variable. 
+
+(10.36).
+
+Refer to Exercise 10.32. IBI
+(a) Find a 95% confidence interval for the mean response corresponding to an area of 40 km2.
+```{r, echo = FALSE}
+qt(0.975,49-2)
+```
+
+$\begin{align}
+SE_{\hat{\mu_y}} &= \sqrt{(\frac{1}{n}  + \frac{(x^* - \bar{x})^2}{\sum_{i}^{n} ( x_i - \bar{x})^2})S^2}\\
+&= \sqrt{(\frac{1}{49}  + \frac{(40 - 28.285714)^2}{(49-1)(17.714166)^2})(273.3946)}\\
+SE_{\hat{\mu_y}} &= 2.37\\
+\end{align}$
+
+$\begin{align}
+\text{Confidence Interval for Mean Response}\\
+\hat{\beta}_0 + \hat{\beta}_1 x^* &\pm t_{1-\frac{\alpha}{2}, (n-2)} \cdot SE_{\hat{\mu_y}}\\
+52.922958 + 0.460155(40) &\pm \text{qt}(0.975,49-2) \cdot 2.37\\
+52.922958 + 0.460155(40) &\pm 2.011741 \cdot 2.37\\
+&[65.61,77.04]\\
+\end{align}$
+
+(b) Find a 95% prediction interval for a future response corresponding to an area of 40 km2.
+
+$\begin{align}
+SE_{\hat{\mu_y}_{*}} &= \sqrt{(1 + \frac{1}{n}  + \frac{(x^* - \bar{x})^2}{\sum_{i}^{n} ( x_i - \bar{x})^2})S^2}\\
+&= \sqrt{(1 + \frac{1}{49}  + \frac{(40 - 28.285714)^2}{(49-1)(17.714166)^2})(273.3946)}\\
+SE_{\hat{\mu_y}} &= 16.70\\
+\end{align}$
+
+$\begin{align}
+\text{Confidence Interval for Mean Response}\\
+\hat{\beta}_0 + \hat{\beta}_1 x^* &\pm t_{1-\frac{\alpha}{2}, (n-2)} \cdot SE_{\hat{\mu_y}}\\
+52.922958 + 0.460155(40) &\pm \text{qt}(0.975,49-2) \cdot 16.70\\
+52.922958 + 0.460155(40) &\pm 2.011741 \cdot 16.70\\
+&[37.58,105.08]\\
+\end{align}$
+
+
+(c) Write a short paragraph interpreting the meaning of the intervals in terms of Ozark Highland
+streams.
+
+For many Ozark Highland streams with a watershed area of 40 $km^2$, the mean Index of Biotic Integrity would fall between 65.61 and 77.04. For individual Ozark Highland streams with a watershed area of 40 $km^2$, the Index of Biotic Integrity would fall between 37.58 and 105.08.
+
+(d) Do you think that these results can be applied to other streams in Arkansas or in other states?
+Explain why or why not.
+
+It would not be appropriate to apply these results to other streams in Arkansas or in other states as the regression coefficients for this linear model may be particular to streams in Ozark Highland and there may be some undetermined factors that play a role in the uniqueness of the parameters.
+
+(10.37).
+
+For Area = 10 $km^2$, using $\hat{y*} = 52.922958 + 0.460155x^*$, the corresponding IBI = $57.52$ and for percent Forest = $63%$, using $\hat{y^*} = 59.907248 + 0.153132x^*$, the corresponding IBI = $69.55$. The prediction intervals for both predicted IBI using Area and IBI using Forest are shown below respectively.
+
+```{r, echo = FALSE}
+new.area <- data.frame(w_qual$Area <- c(10))
+new.forest <- data.frame(w_qual$Forest <- c(63))
+predict(lm1,newdata = new.area,se.fit = TRUE, interval = "predict")
+predict(lm2, newdata = new.forest,se.fit = TRUE, interval = "predict")
+```
+
+The prediction intervals for both are about 70 units wide, showing uncertainty in both predictions; this could be attested given the small coefficients of determination for both models.
+

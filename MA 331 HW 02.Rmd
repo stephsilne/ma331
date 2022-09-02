@@ -1,0 +1,340 @@
+---
+title: "MA 331 HW 02"
+author: "Stephaan Silne"
+date: "9/10/2020"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+
+
+## Problem 1.
+
+i.
+    
+  -for $n = 20$
+    
+```{r, echo = FALSE}
+## P(N <= 8.25)
+pbinom(q = 8.25, size = 20, prob = 0.4, lower.tail = TRUE)
+```
+
+  -for $n = 30$
+
+```{r, echo = FALSE}
+## P(N <= 8.25)
+pbinom(q = 8.25, size= 30, prob = 0.4, lower.tail = TRUE )
+```
+    
+  -for $n = 50$
+    
+```{r, echo = FALSE}
+## P(N <= 8.25)
+pbinom(q = 8.25, size = 50, prob = 0.4, lower.tail = TRUE)
+```
+    
+  -for $n = 75$
+    
+```{r, echo = FALSE}
+## P(N <= 8.25)
+pbinom(q = 8.25, size = 75, prob = 0.4, lower.tail = TRUE)
+```
+    
+  -for $n = 100$
+    
+```{r, echo = FALSE}
+## P(N <= 8.25)
+pbinom(q = 8.25, size = 100, prob = 0.4, lower.tail = TRUE)
+```
+
+
+ii.
+
+$\begin{aligned}
+P(N \leq 8.25) = P(\frac{\frac{N}{n} - p}{\sqrt{\frac{p(1-p)}{n}}} \leq \frac{\frac{8.25}{20} - 0.4}{\sqrt{\frac{0.4(1-0.4)}{20}}}) &\approx \Phi(\frac{8.25 - 20(0.4)}{\sqrt{(20)(0.4)(1-0.4)}})\\ 
+&\approx \Phi(0.114108866147)\\
+&\approx
+\end{aligned}$
+
+```{r, echo = FALSE}
+##P(N <= 8.25)
+pnorm(0.114108866147, mean = 0, sd = 1, lower.tail = TRUE)
+```
+
+$\begin{aligned}
+P(N \leq 8.25) = P(\frac{\frac{N}{n} - p}{\sqrt{\frac{p(1-p)}{n}}} \leq \frac{\frac{8.25}{30} - 0.4}{\sqrt{\frac{0.4(1-0.4)}{30}}}) &\approx \Phi(\frac{8.25 - 30(0.4)}{\sqrt{(30)(0.4)(1-0.4)}})\\ 
+&\approx \Phi(-1.39754248594)\\
+&\approx
+\end{aligned}$
+
+```{r, echo = FALSE}
+##P(N <= 8.25)
+pnorm(-1.39754248594, mean = 0, sd = 1, lower.tail = TRUE)
+```
+
+$\begin{aligned}
+P(N \leq 8.25) = P(\frac{\frac{N}{n} - p}{\sqrt{\frac{p(1-p)}{n}}} \leq \frac{\frac{8.25}{50} - 0.4}{\sqrt{\frac{0.4(1-0.4)}{50}}}) &\approx \Phi(\frac{8.25 - 50(0.4)}{\sqrt{(50)(0.4)(1-0.4)}})\\ 
+&\approx \Phi(-3.39193283149)\\
+&\approx
+\end{aligned}$
+
+```{r, echo = FALSE}
+##P(N <= 8.25)
+pnorm(-3.39193283149, mean = 0, sd = 1, lower.tail = TRUE)
+```
+
+$\begin{aligned}
+P(N \leq 8.25) = P(\frac{\frac{N}{n} - p}{\sqrt{\frac{p(1-p)}{n}}} \leq \frac{\frac{8.25}{75} - 0.4}{\sqrt{\frac{0.4(1-0.4)}{75}}}) &\approx \Phi(\frac{8.25 - 75(0.4)}{\sqrt{(75)(0.4)(1-0.4)}})\\ 
+&\approx \Phi(-5.1265241636)\\
+&\approx
+\end{aligned}$
+
+```{r, echo = FALSE}
+##P(N <= 8.25)
+pnorm(-5.1265241636, mean = 0, sd = 1, lower.tail = TRUE)
+```
+
+$\begin{aligned}
+P(N \leq 8.25) = P(\frac{\frac{N}{n} - p}{\sqrt{\frac{p(1-p)}{n}}} \leq \frac{\frac{8.25}{100} - 0.4}{\sqrt{\frac{0.4(1-0.4)}{100}}}) &\approx \Phi(\frac{8.25 - 100(0.4)}{\sqrt{(100)(0.4)(1-0.4)}})\\ 
+&\approx \Phi(-6.48094161111)\\
+&\approx
+\end{aligned}$
+
+```{r, echo = FALSE}
+##P(N <= 8.25)
+pnorm(-6.48094161111, mean = 0, sd = 1, lower.tail = TRUE)
+```
+
+
+iii.
+
+
+$\begin{aligned}
+\text{abs. diff for $n = 20$}\\
+|0.5955987 - 0.5454243| &= 0.050174\\
+\text{abs. diff for $n = 30$}\\
+|0.09401122 - 0.08112525| &= 0.01288597\\
+\text{abs. diff for $n = 50$}\\
+|0.0002305229 - 0.0003470073| &= 0.0001164844\\
+\text{abs. diff for $n = 75$}\\
+|(1.826106e^{-8}) - (1.475701e^{-7})| &= 1.2930904e^{-7}\\
+\text{abs. diff for $n = 100$}\\
+|(5.431127e^{-13}) - (4.557597e^{-11})| &= 4.50328573e^{-11}\\
+\end{aligned}$
+
+
+```{r, echo = FALSE}
+
+plot(x = c(20,30,50,75,100), y = c(0.050174, 0.012886, 0.000116, 1.293090*10^-7, 4.503285*10^-11), xlab = "n", ylab = "errors", main = "Scatter Plot of Errors of Approximation")
+
+```
+
+iv. 
+|             The greater the sample size, the less error there is in approximating, given there is more information on the population included in the sample $n$. More precision and less randomness occurs with larger sample sizes, thus allowing better approximation and estimation of the mean. 
+
+
+
+
+
+## Problem 2.
+
+
+- for $n = 20$
+
+
+```{r, echo = FALSE}
+
+zs <- c()
+for (i in 1:100){
+  smpl <- rnorm(n = 20, mean = 2, sd = 3)
+  z <- (mean(smpl)-2)/(3/sqrt(20))
+  zs <- c(zs,z)}
+
+plot(density(zs), xlab = "x", ylab = "density", main = "Density of Standard Normal")
+```
+
+```{r, echo = FALSE}
+chi <- c()
+for (i in 1:100){
+  smple <- rnorm(n = 20, mean = 2, sd = 3)
+  chitst <- ((20 - 1) * var(smple))/(3**2)
+  chi <- c(chi, chitst)}
+
+plot(density(chi), xlab = "x", ylab = "density", main = "Density of Chi Sq. Statistic")
+
+```
+
+
+```{r, echo = FALSE}
+
+plot(x = zs, y = chi, xlab = "standard normal", ylab = "chi-sq statistic", main = "Scatter Plot")
+```
+
+- for $n = 30$
+
+```{r, echo = FALSE}
+
+z30 <- c()
+for (i in 1:100){
+  smpl30 <- rnorm(n = 30, mean = 2, sd = 3)
+  
+  zs30 <- (mean(smpl30)-2)/(3/sqrt(30))
+  
+  z30 <- c(z30,zs30)}
+
+plot(density(z30), xlab = "x", ylab = "density", main = "Density of Standard Normal")
+
+```
+
+
+
+```{r, echo = FALSE}
+
+chi30 <- c()
+for (i in 1:100){
+  smpl30 <- rnorm(n = 30, mean = 2, sd = 3)
+  chitst30 <- ((30 - 1) * var(smpl30))/(3**2)
+  chi30 <- c(chi30, chitst30)}
+  
+plot(density(chi30), xlab = "x", ylab = "density", main = "Density of Chi Sq. Statistic")
+
+```
+
+
+```{r, echo = FALSE}
+
+plot(x = z30, y = chi30, xlab = "standard normal", ylab = "chi-sq statistic", main = "Scatter Plot")
+
+```
+
+
+
+- for $n = 50$
+
+```{r,echo = FALSE}
+
+
+z50 <- c()
+for (i in 1:100){
+  smpl50 <- rnorm(n = 50, mean = 2, sd = 3)
+  
+  zs50 <- (mean(smpl50)-2)/(3/sqrt(50))
+  
+  z50 <- c(z50,zs50)}
+
+plot(density(z50), xlab = "x", ylab = "density", main = "Density of Standard Normal")
+
+```
+
+
+```{r, echo = FALSE}
+
+chi50 <- c()
+for (i in 1:100){
+  smpl50 <- rnorm(n = 50, mean = 2, sd = 3)
+  
+  chitst50 <- ((50 - 1) * var(smpl50))/(3**2)
+  
+  chi50 <- c(chi50, chitst50)}
+
+plot(density(chi50), xlab = "x", ylab = "density", main = "Density of Chi Sq. Statistic")
+
+```
+
+
+```{r, echo = FALSE}
+
+plot(x = z50, y = chi50, xlab = "standard normal", ylab = "chi-sq statistic", main = "Scatter Plot")
+
+
+```
+
+
+
+
+- for $n = 75$
+
+```{r, echo = FALSE}
+
+
+z75 <- c()
+for (i in 1:100){
+  smpl75 <- rnorm(n = 75, mean = 2, sd = 3)
+  
+  zs75 <- (mean(smpl75)-2)/(3/sqrt(75))
+  
+  z75 <- c(z75,zs75)}
+
+plot(density(z75), xlab = "x", ylab = "density", main = "Density of Standard Normal")
+
+```
+
+
+```{r, echo = FALSE}
+
+chi75 <- c()
+for (i in 1:100){
+  smpl75 <- rnorm(n = 75, mean = 2, sd = 3)
+  
+  chitst75 <- ((75 - 1) * var(smpl75))/(3**2)
+  
+  chi75 <- c(chi75, chitst75)}
+
+plot(density(chi75), xlab = "x", ylab = "density", main = "Density of Chi Sq. Statistic")
+
+
+```
+
+
+```{r, echo = FALSE}
+
+plot(x = z75, y = chi75, xlab = "standard normal", ylab = "chi-sq statistic", main = "Scatter Plot")
+```
+
+
+
+v. 
+
+  - Based on the density plots of $\frac{\bar{X}-2}{\sqrt{3^2/n}}$ and $\frac{(n-1)S^2}{3^2}$, the probability distributions of $\frac{\bar{X}-2}{\sqrt{3^2/n}}$ becomes more normally distributed as the sample size increases. The shape of the distribution starts to flatten out towards the tails as $n$ gets larger, suggesting normalization. As for the distribution of $\frac{(n-1)S^2}{3^2}$, as the sample size increases, the distributions centers itself more. For $n = 20$, the distribution is skewed more towards the left, but for $n = 75$ the data is much for centralized and centered about the mean. 
+  
+
+vi. 
+  - Based on the scatter plots of $(\frac{\bar{X}-2}{\sqrt{3^2/n}},\frac{(n-1)S^2}{3^2})$, the statistical association between $\frac{\bar{X}-2}{\sqrt{3^2/n}}$ and $\frac{(n-1)S^2}{3^2}$ is non-existent, with there being no obsrved pattern or linear association amongst the two distributions. 
+
+
+
+## Problem 3.
+
+For $N \sim B(n,p)$, 
+
+$\begin{aligned}
+\mu = E(N) &= \sum_{x = 0}^{n}x \frac{n!}{x!(n-x)!} \cdot p^{x} \cdot (1-p)^{n-x}\\
+&= \sum_{x=1}^{n} \frac{n!}{(x-1)!(n-x)!} \cdot p^{x} \cdot (1-p)^{n-x}\\
+&= np \sum_{x=1}^{n} \frac{(n-1)!}{(x-1)!(n-x)!} \cdot p^{x-1} \cdot (1-p)^{n-x}\\
+\text{Let $n-x = (n-1) - (x-1)$},\\
+ E[N] &= np \sum_{x=1}^{n} \frac{(n-1)!}{(x-1)!((n-1)-(x-1))!} \cdot p^{x-1} \cdot (1-p)^{(n-1)-(x-1)}\\
+\text{Let $u = n-1$; so $v = x-1$},\\
+E[N] &= np \sum_{x=1}^{n} \frac{(u)!}{(v)!((u)-(v))!} \cdot p^{v} \cdot (1-p)^{(u)-(v)}\\
+\text{Since $\sum_{x=1}^{n} \frac{(u)!}{(v)!((u)-(v))!} \cdot a^{v} \cdot b^{u-v} = (a+b)^m$ for $a = p$ and $b = 1-p$},\\
+E[N] &= np(p + (1-p))^m= np(1)^m\\
+E[N] &= np\\
+\end{aligned}$
+
+
+## Problem 4.
+
+For $T \sim \tau_{n}$ and by definition of $E[T]$,
+
+$\begin{aligned}
+\qquad \mathrm {E}[T] &= \int_{-\infty}^{\infty}tf(t)dt\\
+\qquad \mathrm{E}[T]&=\frac{1}{\sqrt{n}}\frac{\Gamma(\frac{n+1}{2})}{\Gamma(\frac{1}{2})\Gamma(\frac{n}{2})}\int_{-\infty}^{\infty}t(1+\frac{t^2}{n})^{-\frac{n+1}{2}}dt\\
+ &= 0\\
+\end{aligned}$
+
+With $E[T]$ undefined if $0 \leq n \leq 1$, for $n > 1$, the function $f(t)=t(1+\frac{t^2}{n})^{-\frac{n+1}{2}}$ is an odd function. Therefore, through the integrand, from $(-\infty, \infty)$ the probability density function approaches and is symmetrical around 0. Thus, the expected value or mean, $E[T] = 0$.
+
+
+
+
+
